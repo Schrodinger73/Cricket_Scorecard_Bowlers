@@ -42,15 +42,15 @@ for i in range(0, 19):
     t20_target.append(0)
 for i in range(0, 23):
     t20_target.append(1)
-for i in range(0, 16):
+for i in range(0, 15):
     t20_target.append(2)
-for i in range(0, 4):
+for i in range(0, 6):
     t20_target.append(3)
-for i in range(0, 8):
+for i in range(0, 5):
     t20_target.append(4)
-for i in range(0, 7):
+for i in range(0, 6):
     t20_target.append(5)
-for i in range(0, 7):
+for i in range(0, 5):
     t20_target.append(6)
 
 t20_target_2 = []
@@ -82,7 +82,7 @@ for i in range(0, 7):
     t20_target_extreme.append(4)
 for i in range(0, 9):
     t20_target_extreme.append(5)
-for i in range(0, 9):
+for i in range(0, 8):
     t20_target_extreme.append(6)
 
 ODI_target = []
@@ -146,9 +146,9 @@ NewZealandTestWomen = "Suzie Bates,Georgia Plimmer,Amelia Kerr,Sophie Devine(c),
 NZTestWBowl = [0.3,0,0.75,0.7,0.25,0.34,0,0.79,0.85,0.88,0.91]
 AustraliaT20 = "Travis Head,Jake Fraser-McGurk,Mitchell Marsh(c),Glenn Maxwell,Marcus Stoinis,Matthew Wade,Tim David,Ashton Agar,Pat Cummins,Mitchell Starc,Adam Zampa"
 AUST20Bowl = [0.3,0,0.75,0.7,0.7,0,0.1,0.8,0.95,0.95,0.95]
-AustraliaODI = "Travis Head,Jake Fraser-McGurk,Mitchell Marsh,Steve Smith,Marnus Labuchagne,Glenn Maxwell,Alex Carey,Pat Cummins(c),Mitchell Starc,Adam Zampa,Jason Behrendoff"
+AustraliaODI = "Travis Head,Jake Fraser-McGurk,Mitchell Marsh,Steve Smith,Marnus Labuschagne,Glenn Maxwell,Alex Carey,Pat Cummins(c),Mitchell Starc,Adam Zampa,Jason Behrendoff"
 AUSODIBowl = [0.3,0,0.75,0.2,0.3,0.7,0,0.95,0.95,0.95,0.9]
-AustraliaTest = "Nathan McSweeney,Usman Khawaja,Marnus Labuchagne,Steve Smith,Travis Head,Mitchell Marsh,Alex Carey,Pat Cummins(c),Mitchell Starc,Nathan Lyon,Josh Hazlewood"
+AustraliaTest = "Nathan McSweeney,Usman Khawaja,Marnus Labuschagne,Steve Smith,Travis Head,Mitchell Marsh,Alex Carey,Pat Cummins(c),Mitchell Starc,Nathan Lyon,Josh Hazlewood"
 AUSTestBowl = [0,0,0.3,0.1,0.2,0.8,0,0.95,0.9,0.8,0.9]
 AustraliaT20Women = "Alyssa Healy,Beth Mooney,Georgia Wareham,Tahlia McGrath(c),Ellyse Perry,Phoebe Litchfield,Ashleigh Gardner,Annabel Sutherland,Sophie Molineux,Megan Schutt,Darcie Brown"
 AUST20WBowl = [0,0,0.1,0.1,0.8,0.05,0.75,0.75,0.8,0.8,0.8]
@@ -196,7 +196,8 @@ SouthAfricaTESTWomen = "Laura Wolvaardt(c),Anneke Bosch,Sune Luus,Marizanne Kapp
 SATestWBowl = np.sort(np.random.beta(0.1, 0.9, size=11))
 SATestWBowl[6] = 0
 PeanutButter = "Peanut Butter(c),Peanut Sandwich,Peanut Pancake,Peanut Burger,Peanut Lasagne,Peanut Colada,Sergeant Peanut,Peanut Calculus,Square Peanut,Peanut Biryani,Peanut Rice"
-PBBowl = np.sort(np.random.beta(0.01, 0.9, size=11))
+PBBowl = np.sort(np.random.beta(0.25, 0.8, size=11))
+PBBowl[6] = 0
 DahliaXI = "Viral C(c),Harsha V,Akshit S,Ayush S,Bunny,Aryan,Rishit,Joshua L,Nikhil G,Anchit K,Devajya K"
 DahliaBowl = [0.8,0.83,0.7,0.8,0,0,0,0.65,0.2,0.95,0.9]
 SDS = "Viral C(c),Zehaan Naik,Aditya V,Ishi Jain,Nandini Bhattad,Raghav Govind,Subham Anand,Yash Bihany,Devansh Gupta,P Sarath,Priyanshu Gupta"
@@ -445,10 +446,10 @@ def showStats(D, cut = None, Reverse = True):
     V = list(D.values())
     if cut == None:
         for i in range(len(K)):
-            print(str(i + 1) + ") " + str(K[i]) + " - " + str(V[i]))
+            print(str(i + 1) + ") " + str(K[i]) + " - " + str(round(V[i], 2)))
     else:
         for i in range(cut):
-            print(str(i + 1) + ") " + str(K[i]) + " - " + str(V[i]))
+            print(str(i + 1) + ") " + str(K[i]) + " - " + str(round(V[i], 2)))
 
 def convertToFig(N):
     Wickets = N//10000 - 1
@@ -713,7 +714,6 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
         Prob = ODI
         Overs = int(input("Number of Overs : "))
     t = input(Name_1 + "'s Call : ")
-    time.sleep(1)
     if t.upper() == Toss():
         T1 = input(Name_1 + " chooses to : ").upper()
         while (T1.upper() not in ["BAT", "BOWL"]):
@@ -834,7 +834,7 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
         if T1 < 235:
             Prob = ODI_target_2
     if Format.upper() == "T20":
-        if T1 >= 174 and T1 < 220:
+        if T1 >= 180 and T1 < 220:
             Prob = t20_target
         if T1 >= 220:
             Prob = t20_target_extreme
@@ -955,7 +955,6 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
     Bowling_4 = {}
     Prob = Tests
     t = input(Name_1 + "'s Call : ")
-    time.sleep(1)
     if t.upper() == Toss():
         T1 = input(Name_1 + " chooses to : ").upper()
         while (T1.upper() not in ["BAT", "BOWL"]):
@@ -1047,6 +1046,7 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
         Runs.append(Bowling_Stats[Name[i]].Runs)
         Wickets.append(Bowling_Stats[Name[i]].Wickets)
         Over.append(Bowling_Stats[Name[i]].Overs)
+
     print(pd.DataFrame({"Name" : Name, "Overs" : Over, "Runs" : Runs, "Wickets" : Wickets, "Economy" : Economy}))
     print(" ")
     Y = input("Fall of Wickets ? : ").upper()
@@ -1230,21 +1230,99 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
         print(Name_2 + " wins the match by an innings and " + str(T2 - T1 - T3) + " runs.")
     else:
         print("Target for " + Name_2 + " - " + str(T1 + T3 - T2 + 1) + " runs.")
-    print(" ")
-    Y = input("Fall of Wickets ? : ").upper()
-    print("")
-    if Y != "N":
-        print(60 * "-")
-        print("Fall of Wickets")
-        print(60 * "-")
-        for i in range(len(FOW)):
-            K = FOW[i + 1]
-            Total += K[1]
-            Balls += K[2]
-            S = str(Total) + "/" + str(i + 1)
-            print(K[0] + (25 - len(K[0])) * " " + S + (7 - len(S)) * " " + BallsToOvers(Balls))
-        print(60 * "-")
+    if T1 + T3 >= T2:
+        print(" ")
+        Y = input("Fall of Wickets ? : ").upper()
+        print("")
+        if Y != "N":
+            print(60 * "-")
+            print("Fall of Wickets")
+            print(60 * "-")
+            for i in range(len(FOW)):
+               K = FOW[i + 1]
+               Total += K[1]
+               Balls += K[2]
+               S = str(Total) + "/" + str(i + 1)
+               print(K[0] + (25 - len(K[0])) * " " + S + (7 - len(S)) * " " + BallsToOvers(Balls))
+            print(60 * "-")
     if T1 + T3 < T2:
+        Impact_Points = {}
+        for i in range(0, len(Team_1)):
+            Impact_Points[Team_1[i]] = 0
+            try:
+                Impact_Points[Team_1[i]] += Batting_Score_1[Team_1[i]]
+                if Batting_Score_1[Team_1[i]] >= 100:
+                    Impact_Points[Team_1[i]] += 25
+            except:
+                x = 5
+            try:
+                Impact_Points[Team_1[i]] += Batting_Score_3[Team_1[i]]
+                if Batting_Score_3[Team_1[i]] >= 100:
+                    Impact_Points[Team_1[i]] += 25
+            except:
+                x = 5
+            try:
+                A = Bowling_2[Team_1[i]]
+                Impact_Points[Team_1[i]] += 20 * A.count(5) - 0.1 * total(A)
+                if A.count(5) >= 5:
+                    Impact_Points[Team_1[i]] += 25
+            except:
+                x = 5
+
+        for i in range(0, len(Team_2)):
+            Impact_Points[Team_2[i]] = 50
+            try:
+                Impact_Points[Team_2[i]] += Batting_Score_2[Team_2[i]]
+                if Batting_Score_2[Team_2[i]] >= 100:
+                    Impact_Points[Team_2[i]] += 25
+            except:
+                x = 5
+            try:
+                Impact_Points[Team_2[i]] += Batting_Score_4[Team_2[i]]
+                if Batting_Score_4[Team_2[i]] >= 100:
+                    Impact_Points[Team_2[i]] += 25
+            except:
+                x = 5
+            try:
+                A = Bowling_1[Team_2[i]]
+                Impact_Points[Team_2[i]] += 20 * A.count(5) - 0.1 * total(A)
+                if A.count(5) >= 5:
+                    Impact_Points[Team_2[i]] += 25
+            except:
+                x = 5
+            try:
+                A = Bowling_3[Team_2[i]]
+                Impact_Points[Team_2[i]] += 20 * A.count(5) - 0.1 * total(A)
+                if A.count(5) >= 5:
+                    Impact_Points[Team_2[i]] += 25
+            except:
+                x = 5
+        Impact_Sorted_Dict = dict(sorted(Impact_Points.items(), key=lambda x: x[1], reverse=True))
+        Impact_Sorted = list(Impact_Sorted_Dict.keys())
+        print("")
+        if Impact_Sorted[0] in Team_1:
+            print("Player of the Match - " + Impact_Sorted[0] + " (" + Name_1 + ")")
+        else:
+            print("Player of the Match - " + Impact_Sorted[0] + " (" + Name_2 + ")")
+        print("")
+        if Impact_Sorted[-1] in Team_1:
+            print("Flog of the Match - " + Impact_Sorted[-1] + " (" + Name_1 + ")")
+        else:
+            print("Flog of the Match - " + Impact_Sorted[-1] + " (" + Name_2 + ")")
+        print("")
+        Y = input("Fall of Wickets ? : ").upper()
+        print("")
+        if Y != "N":
+            print(60 * "-")
+            print("Fall of Wickets")
+            print(60 * "-")
+            for i in range(len(FOW)):
+                K = FOW[i + 1]
+                Total += K[1]
+                Balls += K[2]
+                S = str(Total) + "/" + str(i + 1)
+                print(K[0] + (25 - len(K[0])) * " " + S + (7 - len(S)) * " " + BallsToOvers(Balls))
+        print(60 * "-")
         return Name_2, Batting_Score_1, Batting_Score_2, Batting_Score_3, Batting_Score_4, Batting_Sheet, Bowling_1, Bowling_2, Bowling_3, Bowling_4, {Name_1 : [T1 + T3, 20], Name_2 : [T2, 10]}
     X = input("Continue ? : ")
     print(" ")
@@ -1336,6 +1414,84 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
     if T1 + T3 == T2 + T4:
         print("It is a tie!")
         Winner = None
+
+    Impact_Points = {}
+    for i in range(0, len(Team_1)):
+        if Winner == Name_1:
+            Impact_Points[Team_1[i]] = 50
+        else:
+            Impact_Points[Team_1[i]] = 0
+        try:
+            Impact_Points[Team_1[i]] += Batting_Score_1[Team_1[i]]
+            if Batting_Score_1[Team_1[i]] >= 100:
+                Impact_Points[Team_1[i]] += 25
+        except:
+            x = 5
+        try:
+            Impact_Points[Team_1[i]] += Batting_Score_3[Team_1[i]]
+            if Batting_Score_3[Team_1[i]] >= 100:
+                Impact_Points[Team_1[i]] += 25
+        except:
+            x = 5
+        try:
+            A = Bowling_2[Team_1[i]]
+            Impact_Points[Team_1[i]] += 20*A.count(5) - 0.1*total(A)
+            if A.count(5) >= 5:
+                Impact_Points[Team_1[i]] += 5*A.count(5)
+        except:
+            x = 5
+        try:
+            A = Bowling_4[Team_1[i]]
+            Impact_Points[Team_1[i]] += 20*A.count(5) - 0.1*total(A)
+            if A.count(5) >= 5:
+                Impact_Points[Team_1[i]] += 5*A.count(5)
+        except:
+            x = 5
+
+    for i in range(0, len(Team_2)):
+        if Winner == Name_2:
+            Impact_Points[Team_2[i]] = 50
+        else:
+            Impact_Points[Team_2[i]] = 0
+        try:
+            Impact_Points[Team_2[i]] += Batting_Score_2[Team_2[i]]
+            if Batting_Score_2[Team_2[i]] >= 100:
+                Impact_Points[Team_2[i]] += 25
+        except:
+            x = 5
+        try:
+            Impact_Points[Team_2[i]] += Batting_Score_4[Team_2[i]]
+            if Batting_Score_4[Team_2[i]] >= 100:
+                Impact_Points[Team_2[i]] += 25
+        except:
+            x = 5
+        try:
+            A = Bowling_1[Team_2[i]]
+            Impact_Points[Team_2[i]] += 20*A.count(5) - 0.1*total(A)
+            if A.count(5) >= 5:
+                Impact_Points[Team_2[i]] += 5*A.count(5)
+        except:
+            x = 5
+        try:
+            A = Bowling_3[Team_2[i]]
+            Impact_Points[Team_2[i]] += 20*A.count(5) - 0.1*total(A)
+            if A.count(5) >= 5:
+                Impact_Points[Team_2[i]] += 5*A.count(5)
+        except:
+            x = 5
+    Impact_Sorted_Dict = dict(sorted(Impact_Points.items(), key=lambda x: x[1], reverse=True))
+    Impact_Sorted = list(Impact_Sorted_Dict.keys())
+    print("")
+    if Impact_Sorted[0] in Team_1:
+        print("Player of the Match - " + Impact_Sorted[0] + " (" + Name_1 + ")")
+    else:
+        print("Player of the Match - " + Impact_Sorted[0] + " (" + Name_2 + ")")
+    print("")
+    if Impact_Sorted[-1] in Team_1:
+        print("Flog of the Match - " + Impact_Sorted[-1] + " (" + Name_1 + ")")
+    else:
+        print("Flog of the Match - " + Impact_Sorted[-1] + " (" + Name_2 + ")")
+
     print("")
     Y = input("Fall of Wickets ? : ").upper()
     print(" ")
@@ -1397,36 +1553,73 @@ def Series():
     BowlingStats = {}
     Figures_Bowl = {}
     if Format == "TEST":
+        Impact_Points = {}
+        for i in range(len(Team_1)):
+            Impact_Points[Team_1[i]] = 0
+        for i in range(len(Team_2)):
+            Impact_Points[Team_2[i]] = 0
         for i in range(Number - 1):
             W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, _ = MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2)
             for x in BF1.keys():
                 A = BF1[x]
                 Figure = 10000 * (A.count(5) + 1) + 1000 - (sum(A) - 5 * A.count(5))
                 Figures_Bowl[x + "_" + str(i + 1) + "_" + str(1)] = Figure
+                Impact_Points[x] += 20*A.count(5) - 0.1 * total(A)
+                if A.count(5) >= 5:
+                    Impact_Points[x] += 6 * A.count(5)
+                elif A.count(5) >= 3:
+                    Impact_Points[x] += 3 * A.count(5)
             for x in BF2.keys():
                 A = BF2[x]
                 Figure = 10000 * (A.count(5) + 1) + 1000 - (sum(A) - 5 * A.count(5))
                 Figures_Bowl[x + "_" + str(i  + 1) + "_" + str(2)] = Figure
+                Impact_Points[x] += 20 * A.count(5) - 0.1 * total(A)
+                if A.count(5) >= 5:
+                    Impact_Points[x] += 6 * A.count(5)
+                elif A.count(5) >= 3:
+                    Impact_Points[x] += 3 * A.count(5)
             for x in BF3.keys():
                 A = BF3[x]
                 Figure = 10000 * (A.count(5) + 1) + 1000 - (sum(A) - 5 * A.count(5))
                 Figures_Bowl[x + "_" + str(i  + 1) + "_" + str(3)] = Figure
+                Impact_Points[x] += 20 * A.count(5) - 0.1 * total(A)
+                if A.count(5) >= 5:
+                    Impact_Points[x] += 6 * A.count(5)
+                elif A.count(5) >= 3:
+                    Impact_Points[x] += 3 * A.count(5)
             for x in BF4.keys():
                 A = BF4[x]
                 Figure = 10000 * (A.count(5) + 1) + 1000 - (sum(A) - 5 * A.count(5))
                 Figures_Bowl[x + "_" + str(i  + 1) + "_" + str(4)] = Figure
+                Impact_Points[x] += 20 * A.count(5) - 0.1 * total(A)
+                if A.count(5) >= 5:
+                    Impact_Points[x] += 6 * A.count(5)
+                elif A.count(5) >= 3:
+                    Impact_Points[x] += 3 * A.count(5)
             for x in BSco1.keys():
                 A = BSco1[x]
                 BattingScores[x + "_" + str(i + 1) + "_" + str(1)] = A
+                Impact_Points[x] += A
+                if A >= 100:
+                    Impact_Points[x] += 25
             for x in BSco2.keys():
                 A = BSco2[x]
                 BattingScores[x + "_" + str(i + 1) + "_" + str(2)] = A
+                Impact_Points[x] += A
+                if A >= 100:
+                    Impact_Points[x] += 25
             for x in BSco3.keys():
                 A = BSco3[x]
                 BattingScores[x + "_" + str(i + 1) + "_" + str(3)] = A
+                Impact_Points[x] += A
+                if A >= 100:
+                    Impact_Points[x] += 25
             for x in BSco4.keys():
                 A = BSco4[x]
                 BattingScores[x + "_" + str(i + 1) + "_" + str(4)] = A
+                Impact_Points[x] += A
+                if A >= 100:
+                    Impact_Points[x] += 25
             if W != None:
                 Score[W] += 1
             print("")
@@ -1441,32 +1634,83 @@ def Series():
             A = BF1[x]
             Figure = 10000 * (A.count(5) + 1) + 1000 - (sum(A) - 5 * A.count(5))
             Figures_Bowl[x + "_" + str(Number) + "_" + str(1)] = Figure
+            Impact_Points[x] += 20 * A.count(5) - 0.1 * total(A)
+            if A.count(5) >= 5:
+                Impact_Points[x] += 6 * A.count(5)
+            elif A.count(5) >= 3:
+                Impact_Points[x] += 3 * A.count(5)
         for x in BF2.keys():
             A = BF2[x]
             Figure = 10000 * (A.count(5) + 1) + 1000 - (sum(A) - 5 * A.count(5))
             Figures_Bowl[x + "_" + str(Number) + "_" + str(2)] = Figure
+            Impact_Points[x] += 20 * A.count(5) - 0.1 * total(A)
+            if A.count(5) >= 5:
+                Impact_Points[x] += 6 * A.count(5)
+            elif A.count(5) >= 3:
+                Impact_Points[x] += 3 * A.count(5)
         for x in BF3.keys():
             A = BF3[x]
             Figure = 10000 * (A.count(5) + 1) + 1000 - (sum(A) - 5 * A.count(5))
             Figures_Bowl[x + "_" + str(Number) + "_" + str(3)] = Figure
+            Impact_Points[x] += 20 * A.count(5) - 0.1 * total(A)
+            if A.count(5) >= 5:
+                Impact_Points[x] += 6 * A.count(5)
+            elif A.count(5) >= 3:
+                Impact_Points[x] += 3 * A.count(5)
         for x in BF4.keys():
             A = BF4[x]
             Figure = 10000 * (A.count(5) + 1) + 1000 - (sum(A) - 5 * A.count(5))
             Figures_Bowl[x + "_" + str(Number) + "_" + str(4)] = Figure
+            Impact_Points[x] += 20 * A.count(5) - 0.1 * total(A)
+            if A.count(5) >= 5:
+                Impact_Points[x] += 6 * A.count(5)
+            elif A.count(5) >= 3:
+                Impact_Points[x] += 3 * A.count(5)
         for x in BSco1.keys():
             A = BSco1[x]
             BattingScores[x + "_" + str(Number) + "_" + str(1)] = A
+            Impact_Points[x] += A
+            if A >= 100:
+                Impact_Points[x] += 25
         for x in BSco2.keys():
             A = BSco2[x]
             BattingScores[x + "_" + str(Number) + "_" + str(2)] = A
+            Impact_Points[x] += A
+            if A >= 100:
+                Impact_Points[x] += 25
         for x in BSco3.keys():
             A = BSco3[x]
             BattingScores[x + "_" + str(Number) + "_" + str(3)] = A
+            Impact_Points[x] += A
+            if A >= 100:
+                Impact_Points[x] += 25
         for x in BSco4.keys():
             A = BSco4[x]
             BattingScores[x + "_" + str(Number) + "_" + str(4)] = A
+            Impact_Points[x] += A
+            if A >= 100:
+                Impact_Points[x] += 25
         if W != None:
             Score[W] += 1
+        if Score[Name_1] > Score[Name_2]:
+            for i in range(len(Team_1)):
+                Impact_Points[Team_1[i]] += 100
+        if Score[Name_2] > Score[Name_1]:
+            for i in range(len(Team_2)):
+                Impact_Points[Team_2[i]] += 100
+
+        Impact_Sorted_Dict = dict(sorted(Impact_Points.items(), key=lambda x: x[1], reverse=True))
+        Impact_Sorted = list(Impact_Sorted_Dict.keys())
+        print("")
+        if Impact_Sorted[0] in Team_1:
+            print("Player of the Series - " + Impact_Sorted[0] + " (" + Name_1 + ")")
+        else:
+            print("Player of the Series - " + Impact_Sorted[0] + " (" + Name_2 + ")")
+        print("")
+        if Impact_Sorted[-1] in Team_1:
+            print("Flog of the Series - " + Impact_Sorted[-1] + " (" + Name_1 + ")")
+        else:
+            print("Flog of the Series - " + Impact_Sorted[-1] + " (" + Name_2 + ")")
         print("")
         seriesOutput(Score)
         print(" ")
@@ -1510,6 +1754,9 @@ def Series():
         if stats == "N":
             return
         print("")
+        print("Highest Impact Points - ")
+        showStats(Impact_Sorted_Dict)
+        print(" ")
         print(40*"*")
         print("BATTERS")
         print(40*"*")
@@ -1661,11 +1908,11 @@ def Series():
 #Series()
 
 def Tournament():
-    Names = input("Teams playing the Tournament : ").upper().split(",")
-    IndexArray = [t.index(Names[i]) for i in range(len(Names))]
+    N_Teams = input("Teams playing the Tournament : ").upper().split(",")
+    IndexArray = [t.index(N_Teams[i]) for i in range(len(N_Teams))]
     MatchOrder = Combinations(IndexArray)
     Format = input("Format : ").upper()
-    PointsTable = pd.DataFrame({"Teams" : Names, "Matches" : np.zeros(len(Names)), "Won" : np.zeros(len(Names)), "Lost" : np.zeros(len(Names)), "Draw" : np.zeros(len(Names)), "Points" : np.zeros(len(Names)), "NRR" : np.zeros(len(Names)), "Runs Scored" : np.zeros(len(Names)), "Runs Conceded" : np.zeros(len(Names)), "Balls Bowled" : np.zeros(len(Names)), "Balls Played" : np.zeros(len(Names)), "Wickets Taken" : np.zeros(len(Names)), "Wickets Lost" : np.zeros(len(Names))})
+    PointsTable = pd.DataFrame({"Teams" : N_Teams, "Matches" : np.zeros(len(N_Teams)), "Won" : np.zeros(len(N_Teams)), "Lost" : np.zeros(len(N_Teams)), "Draw" : np.zeros(len(N_Teams)), "Points" : np.zeros(len(N_Teams)), "NRR" : np.zeros(len(N_Teams)), "Runs Scored" : np.zeros(len(N_Teams)), "Runs Conceded" : np.zeros(len(N_Teams)), "Balls Bowled" : np.zeros(len(N_Teams)), "Balls Played" : np.zeros(len(N_Teams)), "Wickets Taken" : np.zeros(len(N_Teams)), "Wickets Lost" : np.zeros(len(N_Teams))})
     PointsTable['Matches'] = PointsTable['Matches'].astype(int)
     PointsTable['Won'] = PointsTable['Won'].astype(int)
     PointsTable['Lost'] = PointsTable['Lost'].astype(int)
@@ -1751,7 +1998,7 @@ def Tournament():
             print("Points Table")
             print(PointsTable.loc[:, "Teams":"NRR"])
             print("")
-        if len(Names) < 5:
+        if len(N_Teams) < 5:
             FinalNames = list(PointsTable.loc[[0, 1], "Teams"])
             FinalIndexArray = [t.index(FinalNames[i]) for i in range(len(FinalNames))]
             print(40*"-")
@@ -1986,12 +2233,23 @@ def Tournament():
         showStats(RunsBowl)
         print(" ")
     else:
+        Impact_Points = {}
         for i in range(len(MatchOrder)):
             A = MatchOrder[i]
             print("Next Match" + " - " + "Match " + str(i + 1) + " of " + str(len(MatchOrder)) + " - "+ t[A[0]] + " vs " + t[A[1]])
             print("")
             K = input("Continue ? ")
             print(" ")
+            for i in range(len(Teams[A[0]].split(","))):
+                try:
+                    x = Impact_Points[Teams[A[0]].split(",")[i]]
+                except:
+                    Impact_Points[Teams[A[0]].split(",")[i]] = 0
+            for i in range(len(Teams[A[1]].split(","))):
+                try:
+                    x = Impact_Points[Teams[A[1]].split(",")[i]]
+                except:
+                    Impact_Points[Teams[A[1]].split(",")[i]] = 0
             W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, NRR_Dict = MatchTestOne(t[A[0]], Teams[A[0]].split(","), TeamBowl[A[0]], t[A[1]], Teams[A[1]].split(","), TeamBowl[A[1]])
             i1 = np.where(PointsTable["Teams"] == t[A[0]])[0][0]
             i2 = np.where(PointsTable["Teams"] == t[A[1]])[0][0]
@@ -2007,6 +2265,7 @@ def Tournament():
             PointsTable.loc[i2, "Wickets Lost"] += NRR_Dict[t[A[1]]][1]
             PointsTable.loc[i2, "NRR"] = 6 * (PointsTable.loc[i2, "Runs Scored"] / PointsTable.loc[i2, "Wickets Lost"] - PointsTable.loc[i2, "Runs Conceded"] / PointsTable.loc[i2, "Wickets Taken"])
             PointsTable.loc[i2, "Matches"] += 1
+
             if W == None:
                 PointsTable.loc[i1, "Draw"] += 1
                 PointsTable.loc[i2, "Draw"] += 1
@@ -2034,6 +2293,11 @@ def Tournament():
                     HomeTeam = t[A[1]]
                     OppTeam = t[A[0]]
                 Figures_Bowl[x + "_" + HomeTeam + "_" + OppTeam + "_1"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF2.keys():
                 K = BF2[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5*K.count(5))
@@ -2046,6 +2310,11 @@ def Tournament():
                     HomeTeam = t[A[1]]
                     OppTeam = t[A[0]]
                 Figures_Bowl[x + "_" + HomeTeam + "_" + OppTeam + "_2"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF3.keys():
                 K = BF3[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5*K.count(5))
@@ -2058,6 +2327,11 @@ def Tournament():
                     HomeTeam = t[A[1]]
                     OppTeam = t[A[0]]
                 Figures_Bowl[x + "_" + HomeTeam + "_" + OppTeam + "_3"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF4.keys():
                 K = BF4[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5*K.count(5))
@@ -2070,6 +2344,11 @@ def Tournament():
                     HomeTeam = t[A[1]]
                     OppTeam = t[A[0]]
                 Figures_Bowl[x + "_" + HomeTeam + "_" + OppTeam + "_4"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BSco1.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2081,6 +2360,9 @@ def Tournament():
                     OppTeam = t[A[0]]
                 K = BSco1[x]
                 BattingScores[x + "_" + HomeTeam + "_" + OppTeam + "_1"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco2.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2092,6 +2374,9 @@ def Tournament():
                     OppTeam = t[A[0]]
                 K = BSco2[x]
                 BattingScores[x + "_" + HomeTeam + "_" + OppTeam + "_2"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco3.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2103,6 +2388,9 @@ def Tournament():
                     OppTeam = t[A[0]]
                 K = BSco3[x]
                 BattingScores[x + "_" + HomeTeam + "_" + OppTeam + "_3"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco4.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2114,13 +2402,16 @@ def Tournament():
                     OppTeam = t[A[0]]
                 K = BSco4[x]
                 BattingScores[x + "_" + HomeTeam + "_" + OppTeam + "_4"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             BattingSheet = mergeDict(BattingSheet, BShe)
             BowlingStats = mergeDict(BowlingStats, BF)
             PointsTable = PointsTable.sort_values(by=['Points', 'NRR'], ascending=[False, False]).reset_index().iloc[:, 1:]
             print("Points Table")
             print(PointsTable.loc[:, "Teams":"NRR"])
             print("")
-        if len(Names) < 5:
+        if len(N_Teams) < 5:
             FinalNames = list(PointsTable.loc[[0, 1], "Teams"])
             FinalIndexArray = [t.index(FinalNames[i]) for i in range(len(FinalNames))]
             print(40*"-")
@@ -2143,6 +2434,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[1]]
                     OppTeam = t[FinalIndexArray[0]]
                 Figures_Bowl[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_1"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF2.keys():
                 K = BF2[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5 * K.count(5))
@@ -2155,6 +2451,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[1]]
                     OppTeam = t[FinalIndexArray[0]]
                 Figures_Bowl[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_2"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF3.keys():
                 K = BF3[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5 * K.count(5))
@@ -2167,6 +2468,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[1]]
                     OppTeam = t[FinalIndexArray[0]]
                 Figures_Bowl[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_3"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF4.keys():
                 K = BF4[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5 * K.count(5))
@@ -2179,6 +2485,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[1]]
                     OppTeam = t[FinalIndexArray[0]]
                 Figures_Bowl[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_4"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BSco1.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2190,6 +2501,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco1[x]
                 BattingScores[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_1"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco2.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2201,6 +2515,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco2[x]
                 BattingScores[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_2"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco3.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2212,6 +2529,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco3[x]
                 BattingScores[x + "_Finals_"+ HomeTeam + "_" + OppTeam + "_3"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco4.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2223,8 +2543,12 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco4[x]
                 BattingScores[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_4"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             BattingSheet = mergeDict(BattingSheet, BShe)
             BowlingStats = mergeDict(BowlingStats, BF)
+
             if W != None:
                 print(W + " wins the Tournament!!!")
             else:
@@ -2253,6 +2577,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[3]]
                     OppTeam = t[FinalIndexArray[0]]
                 Figures_Bowl[x + "_Semi Final 1_" + HomeTeam + "_" + OppTeam + "_1"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF2.keys():
                 K = BF2[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5 * K.count(5))
@@ -2265,6 +2594,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[3]]
                     OppTeam = t[FinalIndexArray[0]]
                 Figures_Bowl[x + "_Semi Final 1_" + HomeTeam + "_" + OppTeam + "_2"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF3.keys():
                 K = BF3[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5 * K.count(5))
@@ -2277,6 +2611,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[3]]
                     OppTeam = t[FinalIndexArray[0]]
                 Figures_Bowl[x + "_Semi Final 1_" + HomeTeam + "_" + OppTeam + "_3"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF4.keys():
                 K = BF4[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5 * K.count(5))
@@ -2289,6 +2628,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[3]]
                     OppTeam = t[FinalIndexArray[0]]
                 Figures_Bowl[x + "_Semi Final 1_" + HomeTeam + "_" + OppTeam + "_4"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BSco1.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2300,6 +2644,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco1[x]
                 BattingScores[x + "_Semi Final 1_" + HomeTeam + "_" + OppTeam + "_1"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco2.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2311,6 +2658,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco2[x]
                 BattingScores[x + "_Semi Final 1_" + HomeTeam + "_" + OppTeam + "_2"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco3.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2322,6 +2672,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco3[x]
                 BattingScores[x + "_Semi Final 1_" + HomeTeam + "_" + OppTeam + "_3"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco4.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2333,6 +2686,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco4[x]
                 BattingScores[x + "_Semi Final 1_" + HomeTeam + "_" + OppTeam + "_4"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             BattingSheet = mergeDict(BattingSheet, BShe)
             BowlingStats = mergeDict(BowlingStats, BF)
             W1 = None
@@ -2363,6 +2719,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[2]]
                     OppTeam = t[FinalIndexArray[1]]
                 Figures_Bowl[x + "_Semi Final 2_" + HomeTeam + "_" + OppTeam + "_1"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF2.keys():
                 K = BF2[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5 * K.count(5))
@@ -2375,6 +2736,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[2]]
                     OppTeam = t[FinalIndexArray[1]]
                 Figures_Bowl[x + "_Semi Final 2_" + HomeTeam + "_" + OppTeam + "_2"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF3.keys():
                 K = BF3[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5 * K.count(5))
@@ -2387,6 +2753,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[2]]
                     OppTeam = t[FinalIndexArray[1]]
                 Figures_Bowl[x + "_Semi Final 2_" + HomeTeam + "_" + OppTeam + "_3"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF4.keys():
                 K = BF4[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5 * K.count(5))
@@ -2399,6 +2770,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[2]]
                     OppTeam = t[FinalIndexArray[1]]
                 Figures_Bowl[x + "_Semi Final 2_" + HomeTeam + "_" + OppTeam + "_4"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BSco1.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2410,6 +2786,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[1]]
                 K = BSco1[x]
                 BattingScores[x + "_Semi Final 2_" + HomeTeam + "_" + OppTeam + "_1"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco2.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2421,6 +2800,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[1]]
                 K = BSco2[x]
                 BattingScores[x + "_Semi Final 2_" + HomeTeam + "_" + OppTeam + "_2"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco3.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2432,6 +2814,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[1]]
                 K = BSco3[x]
                 BattingScores[x + "_Semi Final 2_" + HomeTeam + "_" + OppTeam + "_3"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco4.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2443,6 +2828,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[1]]
                 K = BSco4[x]
                 BattingScores[x + "_Semi Final 2_" + HomeTeam + "_" + OppTeam + "_4"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             BattingSheet = mergeDict(BattingSheet, BShe)
             BowlingStats = mergeDict(BowlingStats, BF)
             W2 = None
@@ -2475,6 +2863,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[1]]
                     OppTeam = t[FinalIndexArray[0]]
                 Figures_Bowl[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_1"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF2.keys():
                 K = BF2[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5 * K.count(5))
@@ -2487,6 +2880,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[1]]
                     OppTeam = t[FinalIndexArray[0]]
                 Figures_Bowl[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_2"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF3.keys():
                 K = BF3[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5 * K.count(5))
@@ -2499,6 +2897,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[1]]
                     OppTeam = t[FinalIndexArray[0]]
                 Figures_Bowl[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_3"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BF4.keys():
                 K = BF4[x]
                 Figure = 10000 * (K.count(5) + 1) + 1000 - (sum(K) - 5 * K.count(5))
@@ -2511,6 +2914,11 @@ def Tournament():
                     HomeTeam = t[FinalIndexArray[1]]
                     OppTeam = t[FinalIndexArray[0]]
                 Figures_Bowl[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_4"] = Figure
+                Impact_Points[x] += 20 * K.count(5) - 0.1 * total(K)
+                if K.count(5) >= 5:
+                    Impact_Points[x] += 6 * K.count(5)
+                elif K.count(5) >= 3:
+                    Impact_Points[x] += 3 * K.count(5)
             for x in BSco1.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2522,6 +2930,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco1[x]
                 BattingScores[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_1"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco2.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2533,6 +2944,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco2[x]
                 BattingScores[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_2"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco3.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2544,6 +2958,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco3[x]
                 BattingScores[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_3"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             for x in BSco4.keys():
                 HomeTeam = None
                 OppTeam = None
@@ -2555,6 +2972,9 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco4[x]
                 BattingScores[x + "_Finals_" + HomeTeam + "_" + OppTeam + "_4"] = K
+                Impact_Points[x] += K
+                if K >= 100:
+                    Impact_Points[x] += 25
             BattingSheet = mergeDict(BattingSheet, BShe)
             BowlingStats = mergeDict(BowlingStats, BF)
             if W != None:
@@ -2595,9 +3015,30 @@ def Tournament():
         Econ = dict(zip(Bowlers, EconArray))
         Wickets = dict(zip(Bowlers, WicketsArray))
         AvgBowl = dict(zip(BowlAvg, AvgBowlArray))
+        print("")
+        Impact_Sorted_Dict = dict(sorted(Impact_Points.items(), key=lambda x: x[1], reverse=True))
+        Impact_Sorted = list(Impact_Sorted_Dict.keys())
+        print("")
+        Team_0 = None
+        for i in range(0, len(IndexArray)):
+            if Impact_Sorted[0] in Teams[IndexArray[i]].split(","):
+                Team_0 = t[IndexArray[i]]
+        print("Player of the Tournament - " + Impact_Sorted[0] + " (" + Team_0 + ")")
+        print("")
+
+        Team_1 = None
+        for i in range(0, len(IndexArray)):
+            if Impact_Sorted[-1] in Teams[IndexArray[i]].split(","):
+                Team_1 = t[IndexArray[i]]
+        print("Flog of the Tournament - " + Impact_Sorted[-1] + " (" + Team_1 + ")")
+        print("")
+
         stats = input("Show Stats ? : ").upper()
         if stats == "N":
             return
+        print("")
+        print("Highest Impact Points - ")
+        showStats(Impact_Sorted_Dict)
         print("")
         print(40 * "*")
         print("BATTERS")
