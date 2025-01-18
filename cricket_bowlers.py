@@ -117,6 +117,23 @@ for i in range(0, 2):
 for i in range(0, 2):
     ODI_target_2.append(6)
 
+# Minefield
+Tests_Mine = []
+for i in range(0, 290): #250 #275
+    Tests_Mine.append(0)
+for i in range(0, 40):
+    Tests_Mine.append(1)
+for i in range(0, 16):
+    Tests_Mine.append(2)
+for i in range(0, 5):
+    Tests_Mine.append(3)
+for i in range(0, 7):
+    Tests_Mine.append(4)
+for i in range(0, 6): #5
+    Tests_Mine.append(5)
+Tests_Mine.append(6)
+
+# Normal Scoring 300ish
 Tests = []
 for i in range(0, 270): #250 #275
     Tests.append(0)
@@ -150,6 +167,8 @@ AustraliaODI = "Travis Head,Jake Fraser-McGurk,Mitchell Marsh,Steve Smith,Marnus
 AUSODIBowl = [0.3,0,0.75,0.2,0.3,0.7,0,0.95,0.95,0.95,0.9]
 AustraliaTest = "Nathan McSweeney,Usman Khawaja,Marnus Labuschagne,Steve Smith,Travis Head,Mitchell Marsh,Alex Carey,Pat Cummins(c),Mitchell Starc,Nathan Lyon,Josh Hazlewood"
 AUSTestBowl = [0,0,0.3,0.1,0.2,0.8,0,0.95,0.9,0.8,0.9]
+AustraliaAllTimeTest = "Justin Langer,Matthew Hayden,Don Bradman,Ricky Ponting(c),Steve Smith,Adam Gilchrist,Pat Cummins,Mitchell Johnson,Shane Warne,Glenn McGrath,Dennis Lillee"
+AUSATTestBowl = [0.001, 0, 0.05, 0.075, 0.2, 0, 0.9, 0.9, 0.9, 0.91, 0.9]
 AustraliaT20Women = "Alyssa Healy,Beth Mooney,Georgia Wareham,Tahlia McGrath(c),Ellyse Perry,Phoebe Litchfield,Ashleigh Gardner,Annabel Sutherland,Sophie Molineux,Megan Schutt,Darcie Brown"
 AUST20WBowl = [0,0,0.1,0.1,0.8,0.05,0.75,0.75,0.8,0.8,0.8]
 AustraliaODIWomen = "Alyssa Healy,Beth Mooney,Georgia Wareham,Tahlia McGrath(c),Ellyse Perry,Phoebe Litchfield,Ashleigh Gardner,Annabel Sutherland,Sophie Molineux,Megan Schutt,Darcie Brown"
@@ -170,10 +189,12 @@ IndiaTestWomen = "Shafali Verma,Smriti Mandhana,Shubha Satheesh,Jemimah Rodrigue
 INDTestWBowl = [0,0.1,0,0.1,0.3,0.6,0.6,0.85,0.85,0.9,0.87]
 EnglandODI = "Phil Salt,Zack Crawley,Joe Root,Harry Brook,Jos Buttler(c),Ben Stokes,Sam Curran,Chris Woakes,Jofra Archer,Adil Rashid,Mark Wood"
 ENGODIBowl = [0,0,0.4,0,0,0.7,0.75,0.9,0.9,0.9,0.95]
-EnglandT20 = "Phil Salt,Jos Buttler(c),Will Jacks,Liam Livingstone,Harry Brook,Ben Stokes,Sam Curran,Chris Woakes,Jofra Archer,Adil Rashid,Mark Wood"
+EnglandT20 = "Phil Salt,Jos Buttler(c),Jocob Bethell,Liam Livingstone,Harry Brook,Ben Stokes,Sam Curran,Chris Woakes,Jofra Archer,Adil Rashid,Mark Wood"
 ENGT20Bowl = [0,0,0.3,0.5,0,0.5,0.78,0.85,0.9,0.95,0.95]
 EnglandTest = "Zack Crawley,Ben Duckett,Joe Root,Harry Brook,Ben Stokes(c),Jamie Smith,Chris Woakes,Gus Atkinson,Jofra Archer,Ollie Robinson,Jack Leach"
 ENGTestBowl = [0,0,0.25,0,0.6,0,0.85,0.8,0.87,0.85,0.83]
+EnglandAllTimeTest = "Marcus Trescothick,Andrew Strauss,Michael Vaughan(c),Ian Bell,Joe Root,Kevin Pietersen,Ben Stokes,Andrew Flintoff,Stuart Broad,Graeme Swann,James Anderson"
+ENGATTestBowl = [0, 0, 0, 0, 0.3, 0, 0.75, 0.9, 0.9, 0.9, 0.9]
 EnglandT20Women = "Maia Bouchier,Danni Wyatt-Hodge,Alice Capsey,Nat Sciver-Brunt,Heather Knight(c),Amy Jones,Charlie Dean,Kate Cross,Sophie Ecclestone,Sarah Glenn,Lauren Bell"
 ENGT20WBowl = [0,0,0.4,0.8,0.01,0.75,0.8,0.85,0.9,0.87,0.9]
 EnglandODIWomen = "Tammy Beaumont,Maia Bouchier,Heather Knight(c),Nat Sciver-Brunt,Danni Wyatt-Hodge,Amy Jones,Alice Capsey,Charlie Dean,Sophie Ecclestone,Kate Cross,Lauren Bell"
@@ -186,6 +207,8 @@ SouthAfricaODI = "QDK,Temba Bavuma(c),Rassie van der Dussen,Aiden Markram,Heinri
 SAODIBowl = [0,0,0,0,0,0,0.87,0.87,0.85,0.95,0.8]
 SouthAfricaTEST = "Aiden Markram,Temba Bavuma(c),Tony de Zorzi,Keegan Petersen,David Bedingham,Kyle Verreynne,Marco Jansen,Gerald Coetzee,Kagiso Rabada,Nandre Burger,Anrich Nortje"
 SATestBowl = [0,0,0,0,0,0,0.8,0.9,0.95,0.8,0.9]
+SouthAfricaAllTimeTEST = "Graeme Smith,Hashim Amla,Faf Du Plessis,Jacques Kallis,Herschelle Gibbs,AB De Villiers,Mark Boucher,Shaun Pollock,Keshav Maharaj,Dale Steyn,Allan Donald"
+SAATTestBowl = [0, 0, 0.05, 0.8, 0.01, 0.05, 0, 0.8, 0.75, 0.9, 0.9]
 SouthAfricaT20Women = "Laura Wolvaardt(c),Tazmin Brits,Anneke Bosch,Marizanne Kapp,Nadine de Klerk,Chloe Tryon,Sune Luus,Annerie Dercksen,Sinalo Jafta,Nonkululeko Mlaba,Ayabonga Khaka"
 SAT20WBowl = np.sort(np.random.beta(0.01, 0.9, size=11))
 SAT20WBowl[8] = 0
@@ -195,6 +218,8 @@ SAODIWBowl[7] = 0
 SouthAfricaTESTWomen = "Laura Wolvaardt(c),Anneke Bosch,Sune Luus,Marizanne Kapp,Delmari Tucker,Nadine de Klerk,Sinalo Jafta,Annerie Dercksen,Tumi Sekhukhune,Masabata Klaas,Nonkululeko Mlaba"
 SATestWBowl = np.sort(np.random.beta(0.1, 0.9, size=11))
 SATestWBowl[6] = 0
+HilariousXI = "David Warner,Virender Sehwag(c),Wasim Jaffer,Marnus Labuschagne,Glenn Maxwell,Jimmy Neesham,Dinesh Karthik,Dwayne Bravo,Yuzi Chahal,Kate Cross,Alex Hartley"
+HilariousBowl = [0, 0.1, 0, 0.2, 0.4, 0.6, 0, 0.75, 0.9, 0.9, 0.9]
 PeanutButter = "Peanut Butter(c),Peanut Sandwich,Peanut Pancake,Peanut Burger,Peanut Lasagne,Peanut Colada,Sergeant Peanut,Peanut Calculus,Square Peanut,Peanut Biryani,Peanut Rice"
 PBBowl = np.sort(np.random.beta(0.25, 0.8, size=11))
 PBBowl[6] = 0
@@ -210,10 +235,10 @@ ModernFamily = "Phil Dunphy(c),Luke Dunphy,Claire Dunphy,Cam Tucker,Jay Pritchet
 MFBowl = [0.1,0.8,0,0.4,0.3,0.75,0.6,0.58,0.75,0.8,0.9]
 WeatherXI = "Alex Halestone,Weather Knight(c),Chris Gaylestorm,Ebony Rainford-Brent,Ben Sun-strokes,Jonny Bairsnow,David Chilley,Rain Warne,Matthew Foggard,Jimmy Andersun,John Snow"
 WeatherBowl = [0,0.1,0.4,0,0.5,0,0.8,0.95,0.76,0.85,0.8]
-print("Pre defined Teams - New Zealand, Australia, India, England, South Africa(SA), PeanutButter(PB), DahliaXI, Beatles, WomenArtist(WA), ModernFamily(MF), SDS, WeatherXI")
-Teams = [NewZealandT20, NewZealandODI, NewZealandTest, NewZealandT20Women, NewZealandODIWomen, NewZealandTestWomen, AustraliaODI, AustraliaT20, AustraliaTest, AustraliaODIWomen, AustraliaT20Women, AustraliaTestWomen, IndiaODI, IndiaT20, IndiaTest, IndiaODIWomen, IndiaT20Women, IndiaTestWomen, EnglandT20, EnglandODI, EnglandTest, EnglandT20Women, EnglandODIWomen, EnglandTestWomen, SouthAfricaT20, SouthAfricaODI, SouthAfricaTEST, SouthAfricaT20Women, SouthAfricaODIWomen, SouthAfricaTESTWomen, PeanutButter, DahliaXI, Beatles, WomenArtist, ModernFamily, SDS, WeatherXI]
-TeamBowl = [NZT20Bowl, NZODIBowl, NZTestBowl, NZT20WBowl, NZODIWBowl, NZTestWBowl, AUSODIBowl, AUST20Bowl, AUSTestBowl, AUSODIWBowl, AUST20WBowl, AUSTestWBowl, INDODIBowl, INDT20Bowl, INDTestBowl, INDODIWBowl, INDT20WBowl, INDTestWBowl, ENGT20Bowl, ENGODIBowl, ENGTestBowl, ENGT20WBowl, ENGODIWBowl, ENGTestWBowl, SAT20Bowl, SAODIBowl, SATestBowl, SAT20WBowl, SAODIWBowl, SATestWBowl, PBBowl, DahliaBowl, BeatlesBowl, WABowl, MFBowl, SDSBowl, WeatherBowl]
-t = ["NZT20", "NZODI", "NZTEST", "NZWT20", "NZWODI", "NZWTEST", "AUSODI", "AUST20", "AUSTEST", "AUSWODI", "AUSWT20", "AUSWTEST", "INDODI", "INDT20", "INDTEST", "INDWODI", "INDWT20", "INDWTEST", "ENGT20", "ENGODI", "ENGTEST", "ENGWT20", "ENGWODI", "ENGWTEST", "SAT20", "SAODI", "SATEST", "SAWT20", "SAWODI", "SAWTEST", "PB", "DAHLIAXI", "BEATLES", "WA", "MF", "SDS", "WEATHER"]
+print("Pre defined Teams - New Zealand, Australia, India, England, South Africa(SA), PeanutButter(PB), DahliaXI, Beatles, WomenArtist(WA), ModernFamily(MF), SDS, WeatherXI, Hilarious")
+Teams = [NewZealandT20, NewZealandODI, NewZealandTest, NewZealandT20Women, NewZealandODIWomen, NewZealandTestWomen, AustraliaODI, AustraliaT20, AustraliaTest, AustraliaAllTimeTest, AustraliaODIWomen, AustraliaT20Women, AustraliaTestWomen, IndiaODI, IndiaT20, IndiaTest, IndiaODIWomen, IndiaT20Women, IndiaTestWomen, EnglandT20, EnglandODI, EnglandTest, EnglandAllTimeTest, EnglandT20Women, EnglandODIWomen, EnglandTestWomen, SouthAfricaT20, SouthAfricaODI, SouthAfricaTEST, SouthAfricaAllTimeTEST, SouthAfricaT20Women, SouthAfricaODIWomen, SouthAfricaTESTWomen, PeanutButter, DahliaXI, Beatles, WomenArtist, ModernFamily, SDS, WeatherXI, HilariousXI]
+TeamBowl = [NZT20Bowl, NZODIBowl, NZTestBowl, NZT20WBowl, NZODIWBowl, NZTestWBowl, AUSODIBowl, AUST20Bowl, AUSTestBowl, AUSATTestBowl, AUSODIWBowl, AUST20WBowl, AUSTestWBowl, INDODIBowl, INDT20Bowl, INDTestBowl, INDODIWBowl, INDT20WBowl, INDTestWBowl, ENGT20Bowl, ENGODIBowl, ENGTestBowl, ENGATTestBowl, ENGT20WBowl, ENGODIWBowl, ENGTestWBowl, SAT20Bowl, SAODIBowl, SATestBowl, SAATTestBowl, SAT20WBowl, SAODIWBowl, SATestWBowl, PBBowl, DahliaBowl, BeatlesBowl, WABowl, MFBowl, SDSBowl, WeatherBowl, HilariousBowl]
+t = ["NZT20", "NZODI", "NZTEST", "NZWT20", "NZWODI", "NZWTEST", "AUSODI", "AUST20", "AUSTEST", "AUSATTEST", "AUSWODI", "AUSWT20", "AUSWTEST", "INDODI", "INDT20", "INDTEST", "INDWODI", "INDWT20", "INDWTEST", "ENGT20", "ENGODI", "ENGTEST", "ENGATTEST", "ENGWT20", "ENGWODI", "ENGWTEST", "SAT20", "SAODI", "SATEST", "SAATTEST", "SAWT20", "SAWODI", "SAWTEST", "PB", "DAHLIAXI", "BEATLES", "WA", "MF", "SDS", "WEATHER", "HILARIOUS"]
 
 def removeCap(s):
     return s.replace("(c)", "")
@@ -954,6 +979,12 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
     Bowling_3 = {}
     Bowling_4 = {}
     Prob = Tests
+    if random.random() < 0.5:
+        Prob = Tests_Mine
+        print("Match Conditions - Dusty pitch")
+    else:
+        print("Match Conditions - Green pitch")
+    print("")
     t = input(Name_1 + "'s Call : ")
     if t.upper() == Toss():
         T1 = input(Name_1 + " chooses to : ").upper()
