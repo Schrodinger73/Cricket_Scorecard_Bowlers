@@ -4,6 +4,9 @@ import numpy as np
 import pandas as pd
 import copy
 import time
+import statistics
+
+from sympy.stats.rv import probability
 
 t20 = []
 for i in range(0, 20):
@@ -14,11 +17,11 @@ for i in range(0, 17):
     t20.append(2)
 for i in range(0, 5):
     t20.append(3)
-for i in range(0, 7):
+for i in range(0, 4):
     t20.append(4)
 for i in range(0, 4):
     t20.append(5)
-for i in range(0, 4):
+for i in range(0, 3):
     t20.append(6)
 
 ODI = []
@@ -151,64 +154,96 @@ Tests.append(6)
 
 NewZealandT20 = "Finn Allen,Devon Conway,Kane Williamson(c),Glenn Phillips,Jimmy Neesham,Mark Chapman,Michael Santner,Ish Sodhi,Tim Southee,Lockie Ferguson,Trent Boult"
 NZT20Bowl = [0, 0, 0.1, 0.7, 0.7, 0.4, 0.8, 0.9, 0.95, 0.95, 0.95]
+NZT20Type = [None, None, "S", "S", "P", "S", "S", "S", "P", "P", "P"]
 NewZealandODI = "Devon Conway,Rachin Ravindra,Kane Williamson(c),Daryl Mitchell,Tom Latham,Glenn Phillips,Mark Chapman,Mitchell Santner,Tim Southee,Trent Boult,Lockie Ferguson"
 NZODIBowl = [0, 0.6, 0.1, 0.5, 0, 0.7, 0.4, 0.8, 0.95, 0.95, 0.95]
-NewZealandTest = "Tom Latham,Devon Conway,Kane Williamson(c),Rachin Ravindra,Daryl Mitchell,Tom Blundell,Glenn Phillips,Trent Boult,Matt Henry,Tim Southee,Ben Sears"
+NZODIType = [None, "S", "S", "P", None, "S", "S", "S", "P", "P", "P"]
+NewZealandTest = "Tom Latham,Devon Conway,Kane Williamson(c),Rachin Ravindra,Daryl Mitchell,Tom Blundell,Glenn Phillips,Tim Southee,Trent Boult,Matt Henry,Ben Sears"
 NZTestBowl = [0,0,0.1,0.6,0.6,0,0.75,0.95,0.95,0.95,0.9]
+NZTestType = [None, None, "S", "S", "P", None, "S", "P", "P", "P", "P"]
 NewZealandT20Women = "Suzie Bates,Georgia Plimmer,Amelia Kerr,Sophie Devine(c),Brooke Halliday,Maddy Green,Isabella Gaze,Rosemary Mair,Lea Tahuhu,Eden Carson,Fran Jonas"
 NZT20WBowl = [0.3,0,0.75,0.7,0.25,0.34,0,0.79,0.85,0.88,0.91]
+NZT20WType = ["S", None, "S", "P", "P", "S", None, "P", "P", "S", "S"]
 NewZealandODIWomen = "Suzie Bates,Georgia Plimmer,Amelia Kerr,Sophie Devine(c),Brooke Halliday,Maddy Green,Isabella Gaze,Hannah Rowe,Jess Kerr,Molly Penfold,Fran Jonas"
 NZODIWBowl = [0.3,0,0.75,0.7,0.25,0.34,0,0.79,0.85,0.88,0.91]
+NZODIWType = ["S", None, "S", "P", "P", "S", None, "P", "P", "P", "S"]
 NewZealandTestWomen = "Suzie Bates,Georgia Plimmer,Amelia Kerr,Sophie Devine(c),Brooke Halliday,Maddy Green,Isabella Gaze,Hannah Rowe,Jess Kerr,Molly Penfold,Fran Jonas"
 NZTestWBowl = [0.3,0,0.75,0.7,0.25,0.34,0,0.79,0.85,0.88,0.91]
+NZTestWType = ["S", None, "S", "P", "P", "S", None, "P", "P", "P", "S"]
 AustraliaT20 = "Travis Head,Jake Fraser-McGurk,Mitchell Marsh(c),Glenn Maxwell,Marcus Stoinis,Matthew Wade,Tim David,Ashton Agar,Pat Cummins,Mitchell Starc,Adam Zampa"
 AUST20Bowl = [0.3,0,0.75,0.7,0.7,0,0.1,0.8,0.95,0.95,0.95]
+AUST20Type = ["S", None, "P", "S", "P", None, "P", "S", "P", "P", "S"]
 AustraliaODI = "Travis Head,Jake Fraser-McGurk,Mitchell Marsh,Steve Smith,Marnus Labuschagne,Glenn Maxwell,Alex Carey,Pat Cummins(c),Mitchell Starc,Adam Zampa,Jason Behrendoff"
 AUSODIBowl = [0.3,0,0.75,0.2,0.3,0.7,0,0.95,0.95,0.95,0.9]
-AustraliaTest = "Nathan McSweeney,Usman Khawaja,Marnus Labuschagne,Steve Smith,Travis Head,Mitchell Marsh,Alex Carey,Pat Cummins(c),Mitchell Starc,Nathan Lyon,Josh Hazlewood"
+AUSODIType = ["S", None, "P", "S", "S", "S", None, "P", "P", "S", "P"]
+AustraliaTest = "Sam Konstas,Usman Khawaja,Marnus Labuschagne,Steve Smith,Travis Head,Mitchell Marsh,Alex Carey,Pat Cummins(c),Mitchell Starc,Nathan Lyon,Josh Hazlewood"
 AUSTestBowl = [0,0,0.3,0.1,0.2,0.8,0,0.95,0.9,0.8,0.9]
-AustraliaAllTimeTest = "Justin Langer,Matthew Hayden,Don Bradman,Ricky Ponting(c),Steve Smith,Adam Gilchrist,Pat Cummins,Mitchell Johnson,Shane Warne,Glenn McGrath,Dennis Lillee"
-AUSATTestBowl = [0.001, 0, 0.05, 0.075, 0.2, 0, 0.9, 0.9, 0.9, 0.91, 0.9]
+AUSTestType = [None, None, "S", "S", "S", "P", None, "P", "P", "S", "P"]
+AustraliaAllTimeTest = "Justin Langer,Matthew Hayden,Don Bradman,Ricky Ponting(c),Shane Watson,Steve Smith,Adam Gilchrist,Pat Cummins,Mitchell Johnson,Shane Warne,Glenn McGrath"
+AUSATTestBowl = [0.001, 0, 0.05, 0.075, 0.85, 0.2, 0, 0.9, 0.9, 0.9, 0.91]
+AUSATTestType = ["P", None, "S", "S", "P", "S", None, "P", "P", "S", "P"]
 AustraliaT20Women = "Alyssa Healy,Beth Mooney,Georgia Wareham,Tahlia McGrath(c),Ellyse Perry,Phoebe Litchfield,Ashleigh Gardner,Annabel Sutherland,Sophie Molineux,Megan Schutt,Darcie Brown"
 AUST20WBowl = [0,0,0.1,0.1,0.8,0.05,0.75,0.75,0.8,0.8,0.8]
+AUST20WType = [None, None, "S", "P", "P", "S", "S", "P", "S", "P", "P"]
 AustraliaODIWomen = "Alyssa Healy,Beth Mooney,Georgia Wareham,Tahlia McGrath(c),Ellyse Perry,Phoebe Litchfield,Ashleigh Gardner,Annabel Sutherland,Sophie Molineux,Megan Schutt,Darcie Brown"
 AUSODIWBowl = [0,0,0.1,0.1,0.8,0.05,0.75,0.75,0.8,0.8,0.8]
+AUSODIWType = [None, None, "S", "P", "P", "S", "S", "P", "S", "P", "P"]
 AustraliaTestWomen = "Beth Mooney,Phoebe Litchfield,Ellyse Perry,Tahlia McGrath,Jess Jonassen,Alyssa Healy(c),Ashleigh Gardner,Annabel Sutherland,Alan King,Kim Garth,Darcie Brown"
 AUSTestWBowl = [0,0.05,0.9,0.4,0.5,0,0.75,0.75,0.8,0.8,0.8]
+AUSTestWType = [None, "S", "P", "P", "S", None, "S", "P", "S", "P", "P"]
 IndiaT20 = "Rohit Sharma(c),Abhishek Sharma,Virat Kohli,SKY,Rishabh Pant,Shivam Dube,Rinku Singh,Avesh Khan,Mayank Yadav,Yuzi Chahal,Jasprit Bumrah"
-INDT20Bowl = [0.1,0.23,0.1,0.2,0,0.6,0.2,0.8,0.9,0.9,0.95]
-IndiaODI = "Rohit Sharma(c),Shubman Gill,Virat Kohli,Shreyash Iyer,SKY,Rinku Singh,Ravindra Jadeja,Jasprit Bumrah,Mohd Shami,Kuldeep Yadav,Mohd Siraj"
-INDODIBowl = [0.1,0.1,0.1,0.3,0.3,0.2,0.78,0.95,0.95,0.9,0.85]
+INDT20Bowl = [0.1,0.2,0.1,0.2,0,0.6,0.2,0.8,0.9,0.9,0.95]
+INDT20Type = ["S", "S", "S", "S", None, "P", "S", "P", "P", "S", "P"]
+IndiaODI = "Rohit Sharma(c),Shubman Gill,Virat Kohli,Shreyash Iyer,KL Rahul,Hardik Pandya,Ravindra Jadeja,Jasprit Bumrah,Mohd Shami,Kuldeep Yadav,Mohd Siraj"
+INDODIBowl = [0.1,0.1,0.1,0.1,0,0.76,0.78,0.95,0.95,0.9,0.85]
+INDODIType = ["S", "S", "S", "S", None, "P", "S", "P", "P", "S", "P"]
 IndiaTest = "Rohit Sharma(c),Yashasvi Jaiswal,Shubman Gill,Virat Kohli,KL Rahul,Nitish Kumar Reddy,Rishabh Pant,Ravindra Jadeja,Mohd Shami,Jasprit Bumrah,Mohd Siraj"
 INDTestBowl = [0.01,0,0.007,0.01,0,0.4,0,0.8,0.85,0.99,0.9]
+INDTestType = ["S", None, "S", "S", None, "P", None, "S", "P", "P", "P"]
+IndiaAllTimeTest = "Sunil Gavaskar,Virender Sehwag,Rahul Dravid,Sachin Tendulkar,Virat Kohli(c),Rishabh Pant,Kapil Dev,Ravichandran Ashwin,Anil Kumble,Jasprit Bumrah,Harbhajan Singh"
+INDATTestBowl = [0, 0.1, 0, 0.35, 0, 0, 0.8, 0.9, 0.9, 0.9, 0.85]
+INDATTestType = [None, "S", None, "S", "S", None, "P", "S", "S", "P", "S"]
 IndiaT20Women = "Shafali Verma,Smriti Mandhana,Jemimah Rodrigues,Harmanpreet Kaur(c),Deepti Sharma,Richa Ghosh,Pooja Vastrakar,Arundhati Reddy,Shreyanka Patil,Radha Yadav,Renuka Singh"
-INDT20WBowl = [0,0.1,0.1,0.3,0.6,0.6,0.8,0.78,0.9,0.8,0.88]
+INDT20WBowl = [0,0.1,0.1,0.3,0.6,0,0.8,0.78,0.9,0.8,0.88]
+INDT20WType = [None, "S", "S", "S", "S", None, "P", "P", "S", "S", "P"]
 IndiaODIWomen = "Shafali Verma,Smriti Mandhana,Dayalan Hemalatha,Harmanpreet Kaur(c),Jemimah Rodrigues,Richa Ghosh,Deepti Sharma,Pooja Vastrakar,Radha Yadav,Asha Sobhana,Renuka Singh"
-INDODIWBowl = [0,0.1,0.3,0.4,0.1,0.6,0.7,0.88,0.85,0.85,0.9]
+INDODIWBowl = [0,0.1,0.3,0.4,0.1,0,0.7,0.88,0.85,0.85,0.9]
+INDODIWType = [None, "S", "S", "S", "S", None, "S", "P", "S", "S","P"]
 IndiaTestWomen = "Shafali Verma,Smriti Mandhana,Shubha Satheesh,Jemimah Rodrigues,Harmanpreet Kaur(c),Richa Ghosh,Deepti Sharma,Pooja Vastrakar,Shen Rana,Renuka Singh,Rajeshwari Gayakwad"
-INDTestWBowl = [0,0.1,0,0.1,0.3,0.6,0.6,0.85,0.85,0.9,0.87]
-EnglandODI = "Phil Salt,Zack Crawley,Joe Root,Harry Brook,Jos Buttler(c),Ben Stokes,Sam Curran,Chris Woakes,Jofra Archer,Adil Rashid,Mark Wood"
+INDTestWBowl = [0,0.1,0,0.1,0.3,0,0.6,0.85,0.85,0.9,0.87]
+INDTestWType = [None, "S", None, "S", "S", None, "S", "P", "S", "P", "S"]
+EnglandODI = "Phil Salt,Zack Crawley,Joe Root,Harry Brook(c),Jos Buttler,Ben Stokes,Sam Curran,Chris Woakes,Jofra Archer,Adil Rashid,Mark Wood"
 ENGODIBowl = [0,0,0.4,0,0,0.7,0.75,0.9,0.9,0.9,0.95]
-EnglandT20 = "Phil Salt,Jos Buttler(c),Jocob Bethell,Liam Livingstone,Harry Brook,Ben Stokes,Sam Curran,Chris Woakes,Jofra Archer,Adil Rashid,Mark Wood"
+ENGODIType = [None, None, "S", None, None, "P", "P", "P", "P", "S", "P"]
+EnglandT20 = "Phil Salt,Jos Buttler,Jocob Bethell,Liam Livingstone,Harry Brook(c),Ben Stokes,Sam Curran,Chris Woakes,Jofra Archer,Adil Rashid,Mark Wood"
 ENGT20Bowl = [0,0,0.3,0.5,0,0.5,0.78,0.85,0.9,0.95,0.95]
-EnglandTest = "Zack Crawley,Ben Duckett,Joe Root,Harry Brook,Ben Stokes(c),Jamie Smith,Chris Woakes,Gus Atkinson,Jofra Archer,Ollie Robinson,Jack Leach"
+ENGT20Type = [None, None, "S", "S", None, "P", "P", "P", "P", "S", "P"]
+EnglandTest = "Zack Crawley,Ben Duckett,Joe Root,Harry Brook,Ben Stokes(c),Jamie Smith,Chris Woakes,Gus Atkinson,Jofra Archer,Mark Wood,Jack Leach"
 ENGTestBowl = [0,0,0.25,0,0.6,0,0.85,0.8,0.87,0.85,0.83]
+ENGTestType = [None, None, "S", None, "P", None, "P", "P", "P", "P", "S"]
 EnglandAllTimeTest = "Marcus Trescothick,Andrew Strauss,Michael Vaughan(c),Ian Bell,Joe Root,Kevin Pietersen,Ben Stokes,Andrew Flintoff,Stuart Broad,Graeme Swann,James Anderson"
 ENGATTestBowl = [0, 0, 0, 0, 0.3, 0, 0.75, 0.9, 0.9, 0.9, 0.9]
-EnglandT20Women = "Maia Bouchier,Danni Wyatt-Hodge,Alice Capsey,Nat Sciver-Brunt,Heather Knight(c),Amy Jones,Charlie Dean,Kate Cross,Sophie Ecclestone,Sarah Glenn,Lauren Bell"
-ENGT20WBowl = [0,0,0.4,0.8,0.01,0.75,0.8,0.85,0.9,0.87,0.9]
+ENGATTestType = [None, None, None, None, "S", None, "P", "P", "P", "S", "P"]
+EnglandT20Women = "Maia Bouchier,Danni Wyatt-Hodge,Alice Capsey,Nat Sciver-Brunt,Heather Knight(c),Amy Jones,Charlie Dean,Sophie Ecclestone,Freya Kemp,Sarah Glenn,Lauren Bell"
+ENGT20WBowl = [0,0,0.4,0.8,0.01,0,0.85,0.87,0.9,0.87,0.9]
+ENGT20WType = [None, None, "S", "P", "S", None, "S", "S", "P", "S", "P"]
 EnglandODIWomen = "Tammy Beaumont,Maia Bouchier,Heather Knight(c),Nat Sciver-Brunt,Danni Wyatt-Hodge,Amy Jones,Alice Capsey,Charlie Dean,Sophie Ecclestone,Kate Cross,Lauren Bell"
-ENGODIWBowl = [0,0,0.01,0.8,0,0.75,0.4,0.85,0.9,0.9,0.95]
+ENGODIWBowl = [0,0,0.01,0.8,0,0,0.4,0.85,0.9,0.9,0.95]
+ENGODIWType = [None, None, "S", "P", None, None, "S", "S", "S", "P", "P"]
 EnglandTestWomen = "Maia Bouchier,Tammy Beaumont,Heather Knight(c),Nat Sciver-Brunt,Sophia Dunkley,Danni Wyatt-Hodge,Amy Jones,Sophie Ecclestone,Kate Cross,Lauren Filer,Lauren Bell"
 ENGTestWBowl = [0,0,0.02,0.8,0.01,0.01,0,0.85,0.9,0.87,0.92]
+ENGTestWType = [None, None, "S", "P", "S", None, None, "S", "P", "P", "P"]
 SouthAfricaT20 = "Reeza Hendricks,QDK,Aiden Markram(c),Tristan Stubbs,Heinrich Klaasen,David Miller,Marco Jansen,Keshav Maharaj,Kagiso Rabada,Anrich Nortje,Tabraiz Shamsi"
 SAT20Bowl = [0,0,0,0,0,0,0.9,0.87,0.95,0.95,0.88]
+SAT20Type = [None, None, None, None, None, None, "P", "S", "P", "P", "S"]
 SouthAfricaODI = "QDK,Temba Bavuma(c),Rassie van der Dussen,Aiden Markram,Heinrich Klaasen,David Miller,Marco Jensen,Gerald Coetzee,Keshav Maharaj,Kagiso Rabada,Tabraiz Shamsi"
 SAODIBowl = [0,0,0,0,0,0,0.87,0.87,0.85,0.95,0.8]
+SAODIType = [None, None, None, None, None, None, "P", "P", "S", "P", "S"]
 SouthAfricaTEST = "Aiden Markram,Temba Bavuma(c),Tony de Zorzi,Keegan Petersen,David Bedingham,Kyle Verreynne,Marco Jansen,Gerald Coetzee,Kagiso Rabada,Nandre Burger,Anrich Nortje"
 SATestBowl = [0,0,0,0,0,0,0.8,0.9,0.95,0.8,0.9]
-SouthAfricaAllTimeTEST = "Graeme Smith,Hashim Amla,Faf Du Plessis,Jacques Kallis,Herschelle Gibbs,AB De Villiers,Mark Boucher,Shaun Pollock,Keshav Maharaj,Dale Steyn,Allan Donald"
+SouthAfricaAllTimeTEST = "Graeme Smith(c),Hashim Amla,Faf Du Plessis,Jacques Kallis,Herschelle Gibbs,AB De Villiers,Mark Boucher,Shaun Pollock,Keshav Maharaj,Dale Steyn,Allan Donald"
 SAATTestBowl = [0, 0, 0.05, 0.8, 0.01, 0.05, 0, 0.8, 0.75, 0.9, 0.9]
+SAATTestType = [None, None, "S", "P", "S", "P", None, "P", "S", "P", "P"]
 SouthAfricaT20Women = "Laura Wolvaardt(c),Tazmin Brits,Anneke Bosch,Marizanne Kapp,Nadine de Klerk,Chloe Tryon,Sune Luus,Annerie Dercksen,Sinalo Jafta,Nonkululeko Mlaba,Ayabonga Khaka"
 SAT20WBowl = np.sort(np.random.beta(0.01, 0.9, size=11))
 SAT20WBowl[8] = 0
@@ -218,8 +253,12 @@ SAODIWBowl[7] = 0
 SouthAfricaTESTWomen = "Laura Wolvaardt(c),Anneke Bosch,Sune Luus,Marizanne Kapp,Delmari Tucker,Nadine de Klerk,Sinalo Jafta,Annerie Dercksen,Tumi Sekhukhune,Masabata Klaas,Nonkululeko Mlaba"
 SATestWBowl = np.sort(np.random.beta(0.1, 0.9, size=11))
 SATestWBowl[6] = 0
-HilariousXI = "David Warner,Virender Sehwag(c),Wasim Jaffer,Marnus Labuschagne,Glenn Maxwell,Jimmy Neesham,Dinesh Karthik,Dwayne Bravo,Yuzi Chahal,Kate Cross,Alex Hartley"
-HilariousBowl = [0, 0.1, 0, 0.2, 0.4, 0.6, 0, 0.75, 0.9, 0.9, 0.9]
+AfghanistanT20 = ""
+WestIndiesAllTimeTest = "Gordon Greenidge,Shivnarine Chanderpaul,George Headley,Viv Richards,Brian Lara,Garry Sobers,Jackie Hendriks,Malcolm Marshall,Michael Holding,Curtly Ambrose,Lance Gibbs"
+WIATTestBowl = [0, 0, 0, 0, 0, 0.87, 0, 0.9, 0.9, 0.9, 0.87]
+HilariousXI = "David Warner,Chris Gayle,Wasim Jaffer,Marnus Labuschagne,Glenn Maxwell(c),Jimmy Neesham,Dinesh Karthik,Dwayne Bravo,Yuzi Chahal,Kate Cross,Alex Hartley"
+HilariousBowl = [0, 0.2, 0, 0.2, 0.4, 0.6, 0, 0.75, 0.9, 0.9, 0.9]
+HilariousType = [None, "S", None, "S", "S", "P", None, "P", "S", "P", "S"]
 PeanutButter = "Peanut Butter(c),Peanut Sandwich,Peanut Pancake,Peanut Burger,Peanut Lasagne,Peanut Colada,Sergeant Peanut,Peanut Calculus,Square Peanut,Peanut Biryani,Peanut Rice"
 PBBowl = np.sort(np.random.beta(0.25, 0.8, size=11))
 PBBowl[6] = 0
@@ -235,11 +274,41 @@ ModernFamily = "Phil Dunphy(c),Luke Dunphy,Claire Dunphy,Cam Tucker,Jay Pritchet
 MFBowl = [0.1,0.8,0,0.4,0.3,0.75,0.6,0.58,0.75,0.8,0.9]
 WeatherXI = "Alex Halestone,Weather Knight(c),Chris Gaylestorm,Ebony Rainford-Brent,Ben Sun-strokes,Jonny Bairsnow,David Chilley,Rain Warne,Matthew Foggard,Jimmy Andersun,John Snow"
 WeatherBowl = [0,0.1,0.4,0,0.5,0,0.8,0.95,0.76,0.85,0.8]
-print("Pre defined Teams - New Zealand, Australia, India, England, South Africa(SA), PeanutButter(PB), DahliaXI, Beatles, WomenArtist(WA), ModernFamily(MF), SDS, WeatherXI, Hilarious")
-Teams = [NewZealandT20, NewZealandODI, NewZealandTest, NewZealandT20Women, NewZealandODIWomen, NewZealandTestWomen, AustraliaODI, AustraliaT20, AustraliaTest, AustraliaAllTimeTest, AustraliaODIWomen, AustraliaT20Women, AustraliaTestWomen, IndiaODI, IndiaT20, IndiaTest, IndiaODIWomen, IndiaT20Women, IndiaTestWomen, EnglandT20, EnglandODI, EnglandTest, EnglandAllTimeTest, EnglandT20Women, EnglandODIWomen, EnglandTestWomen, SouthAfricaT20, SouthAfricaODI, SouthAfricaTEST, SouthAfricaAllTimeTEST, SouthAfricaT20Women, SouthAfricaODIWomen, SouthAfricaTESTWomen, PeanutButter, DahliaXI, Beatles, WomenArtist, ModernFamily, SDS, WeatherXI, HilariousXI]
-TeamBowl = [NZT20Bowl, NZODIBowl, NZTestBowl, NZT20WBowl, NZODIWBowl, NZTestWBowl, AUSODIBowl, AUST20Bowl, AUSTestBowl, AUSATTestBowl, AUSODIWBowl, AUST20WBowl, AUSTestWBowl, INDODIBowl, INDT20Bowl, INDTestBowl, INDODIWBowl, INDT20WBowl, INDTestWBowl, ENGT20Bowl, ENGODIBowl, ENGTestBowl, ENGATTestBowl, ENGT20WBowl, ENGODIWBowl, ENGTestWBowl, SAT20Bowl, SAODIBowl, SATestBowl, SAATTestBowl, SAT20WBowl, SAODIWBowl, SATestWBowl, PBBowl, DahliaBowl, BeatlesBowl, WABowl, MFBowl, SDSBowl, WeatherBowl, HilariousBowl]
-t = ["NZT20", "NZODI", "NZTEST", "NZWT20", "NZWODI", "NZWTEST", "AUSODI", "AUST20", "AUSTEST", "AUSATTEST", "AUSWODI", "AUSWT20", "AUSWTEST", "INDODI", "INDT20", "INDTEST", "INDWODI", "INDWT20", "INDWTEST", "ENGT20", "ENGODI", "ENGTEST", "ENGATTEST", "ENGWT20", "ENGWODI", "ENGWTEST", "SAT20", "SAODI", "SATEST", "SAATTEST", "SAWT20", "SAWODI", "SAWTEST", "PB", "DAHLIAXI", "BEATLES", "WA", "MF", "SDS", "WEATHER", "HILARIOUS"]
-
+RCB = "Virat Kohli,Phil Salt,Liam Livingstone,Rajat Patidar,Devdutt Padikkal,Jacob Bethell,Jitesh Sharma,Josh Hazlewood,Bhuvneshwar Kumar,Yash Dayal,Suyash Sharma"
+RCBBowl = [0, 0, 0.6, 0, 0, 0.5, 0, 0.9, 0.85, 0.85, 0.8]
+RCBType = [None, None, "S", None, None, "S", None, "P", "P", "P", "S"]
+KKR = "Quinton de Kock,Sunil Narine,Angkrish Raghuvanshi,Venkatesh Iyer(c),Rinku Singh,Andre Russell,Ramandeep Singh,Harshit Rana,Vaibhav Arora,Anrich Nortje,Varun Chakravarthy"
+KKRBowl = [0, 0.9, 0, 0.4, 0.2, 0.8, 0, 0.9, 0.85, 0.9, 0.9]
+KKRType = [None, "S", None, "P", "S", "P", None, "P", "P", "P", "S"]
+CSK = "Ruturaj Gaikwad(c),Rachin Ravindra,Rahul Tripathi,Shivam Dube,Sam Curran,Vijay Shankar,Ravindra Jadeja,MS Dhoni,Ravichandran Ashwin,Noor Ahmad,Matheesha Pathirana"
+CSKBowl = [0, 0.7, 0, 0.7, 0.8, 0.6, 0.85, 0, 0.85, 0.85, 0.8]
+CSKType = [None, "S", None, "P", "P", "P", "S", None, "S", "S", "P", "P"]
+DC = "Jake Fraser-McGurk,KL Rahul,Faf du Plessis,Karun Nair,Tristan Stubbs,Axar Patel(c),Abishek Porel,Mitchell Starc,T Natarajan,Kuldeep Yadav,Mukesh Kumar"
+DCBowl = [0, 0, 0, 0, 0, 0.8, 0, 0.9, 0.85, 0.9, 0.75]
+DCType = [None, None, None, None, None, "S", None, "P", "P", "S", "P"]
+MI = "Rohit Sharma,Will Jacks,Tilak Varma,Suryakumar Yadav,Hardik Pandya(c),Naman Dhir,Robin Minz,Deepak Chahar,Jasprit Bumrah,Trent Boult,Mujeeb-ur-Rahman"
+MIBowl = [0.3, 0.6, 0, 0.25, 0.75, 0, 0, 0.9, 0.95, 0.93, 0.87]
+MIType = ["S", "S", None, "S", "P", None, None, "P", "P", "P", "S"]
+LSG = "Rishabh Pant(c),Aiden Markram,Nicholas Pooran,Mitchell Marsh,Ayush Badoni,David Miller,Shahbaz Ahmed,Ravi Bishnoi,Avesh Khan,Mohsin Khan,Akash Deep"
+LSGBowl = [0, 0, 0, 0.75, 0, 0, 0.75, 0.85, 0.9, 0.85, 0.8]
+LSGType = [None, None, None, "P", None, None, "S", "S", "P", "P", "P"]
+GT = "Shubman Gill(c),Jos Buttler,Sai Sudharsan,Glenn Phillips,Shahrukh Khan,Rahul Tewatia,Washington Sundar,Rashid Khan,Kagiso Rabada,Mohd Siraj,Prasidh Krishna"
+GTBowl = [0, 0, 0.4, 0.75, 0, 0.75, 0.75, 0.95, 0.95, 0.9, 0.8]
+GTType = [None, None, "S", "S", None, "S", "S", "S", "P", "P", "P"]
+RR = "Yashasvi Jaiswal,Sanju Samson(c),Nitish Rana,Shimron Hetmyer,Riyan Parag,Shubham Dubey,Wanindu Hasaranga,Jofra Archer,Sandeep Sharma,Akash Madhwal,Maheesh Theekshana"
+RRBowl = [0, 0, 0.5, 0, 0.7, 0, 0.85, 0.9, 0.85, 0.8, 0.9]
+RRType = [None, None, "S", None, "S", None, "S", "P", "P", "P", "S"]
+SRH = "Abhishek Sharma,Travis Head,Ishan Kishan,Abhinav Manohar,Heinrich Klaasen,Nitish Kumar Reddy,Pat Cummins(c),Harshal Patel,Mohammed Shami,Adam Zampa,Jaydev Unadkat"
+SRHBowl = [0.3, 0.3, 0, 0, 0, 0.7, 0.9, 0.9, 0.9, 0.9, 0.75]
+SRHType = ["S", "S", None, None, None, "P", "P", "P", "P", "S", "P"]
+PK = "Prabhsimran Singh,Josh Inglis,Shreyas Iyer(c),Nehal Wadhera,Glenn Maxwell,Marcus Stoinis,Shashank Singh,Marco Jansen,Yash Thakur,Arshdeep Singh,Yuzi Chahal"
+PKBowl = [0, 0, 0, 0.2, 0.7, 0.75, 0, 0.85, 0.85, 0.95, 0.95]
+PKType = [None, None, None, "S", "S", "P", None, "P", "P", "P", "S"]
+print("Pre defined Teams - New Zealand, Australia, India, England, South Africa(SA), West Indies(WI), PeanutButter(PB), DahliaXI, Beatles, WomenArtist(WA), ModernFamily(MF), SDS, WeatherXI, Hilarious, RCB, MI, CSK, SRH, KKR, GT, LSG, PK, RR, DC")
+Teams = [NewZealandT20, NewZealandODI, NewZealandTest, NewZealandT20Women, NewZealandODIWomen, NewZealandTestWomen, AustraliaODI, AustraliaT20, AustraliaTest, AustraliaAllTimeTest, AustraliaODIWomen, AustraliaT20Women, AustraliaTestWomen, IndiaODI, IndiaT20, IndiaTest, IndiaAllTimeTest, IndiaODIWomen, IndiaT20Women, IndiaTestWomen, EnglandT20, EnglandODI, EnglandTest, EnglandAllTimeTest, EnglandT20Women, EnglandODIWomen, EnglandTestWomen, SouthAfricaT20, SouthAfricaODI, SouthAfricaTEST, SouthAfricaAllTimeTEST, SouthAfricaT20Women, SouthAfricaODIWomen, SouthAfricaTESTWomen, WestIndiesAllTimeTest, PeanutButter, DahliaXI, Beatles, WomenArtist, ModernFamily, SDS, WeatherXI, HilariousXI, RCB, MI, CSK, SRH, KKR, GT, LSG, PK, RR, DC]
+TeamBowl = [NZT20Bowl, NZODIBowl, NZTestBowl, NZT20WBowl, NZODIWBowl, NZTestWBowl, AUSODIBowl, AUST20Bowl, AUSTestBowl, AUSATTestBowl, AUSODIWBowl, AUST20WBowl, AUSTestWBowl, INDODIBowl, INDT20Bowl, INDTestBowl, INDATTestBowl, INDODIWBowl, INDT20WBowl, INDTestWBowl, ENGT20Bowl, ENGODIBowl, ENGTestBowl, ENGATTestBowl, ENGT20WBowl, ENGODIWBowl, ENGTestWBowl, SAT20Bowl, SAODIBowl, SATestBowl, SAATTestBowl, SAT20WBowl, SAODIWBowl, SATestWBowl, WIATTestBowl, PBBowl, DahliaBowl, BeatlesBowl, WABowl, MFBowl, SDSBowl, WeatherBowl, HilariousBowl, RCBBowl, MIBowl, CSKBowl, SRHBowl, KKRBowl, GTBowl, LSGBowl, PKBowl, RRBowl, DCBowl]
+TeamType = [NZT20Type, NZODIType, NZTestType, NZT20WType, NZODIWType, NZTestWType, AUSODIType, AUST20Type, AUSTestType, AUSATTestType, AUSODIWType, AUST20WType, AUSTestWType, INDODIType, INDT20Type, INDTestType, INDATTestType, INDODIWType, INDT20WType, INDTestWType, ENGT20Type, ENGODIType, ENGTestType, ENGATTestType, ENGT20WType, ENGODIWType, ENGTestWType, SAT20Type, SAODIType, None, SAATTestType, None, None, None, None, None, None, None, None, None, None, None, HilariousType, RCBType, MIType, CSKType, SRHType, KKRType, GTType, LSGType, PKType, RRType, DCType]
+t = ["NZT20", "NZODI", "NZTEST", "NZWT20", "NZWODI", "NZWTEST", "AUSODI", "AUST20", "AUSTEST", "AUSATTEST", "AUSWODI", "AUSWT20", "AUSWTEST", "INDODI", "INDT20", "INDTEST", "INDATTEST", "INDWODI", "INDWT20", "INDWTEST", "ENGT20", "ENGODI", "ENGTEST", "ENGATTEST", "ENGWT20", "ENGWODI", "ENGWTEST", "SAT20", "SAODI", "SATEST", "SAATTEST", "SAWT20", "SAWODI", "SAWTEST", "WIATTEST", "PB", "DAHLIAXI", "BEATLES", "WA", "MF", "SDS", "WEATHER", "HILARIOUS", "RCB", "MI", "CSK", "SRH", "KKR", "GT", "LSG", "PK", "RR", "DC"]
 def removeCap(s):
     return s.replace("(c)", "")
 
@@ -263,24 +332,24 @@ def Toss():
     return "T"
 
 # Prints scoreline of series as it is going on.
-def seriesGoing(S):
+def seriesGoing(S, N):
     K = list(S.keys())
     if S[K[0]] > S[K[1]]:
-        print(K[0] + " leads the series by " + str(S[K[0]]) + " - " + str(S[K[1]]))
+        print(K[0] + " leads by " + str(S[K[0]]) + " - " + str(S[K[1]]))
     if S[K[0]] < S[K[1]]:
-        print(K[1] + " leads the series by " + str(S[K[1]]) + " - " + str(S[K[0]]))
+        print(K[1] + " leads by " + str(S[K[1]]) + " - " + str(S[K[0]]))
     if S[K[0]] == S[K[1]]:
-        print("Series is level at " + str(S[K[0]]) + " - " + str(S[K[1]]))
+        print(N + " is level at " + str(S[K[0]]) + " - " + str(S[K[1]]))
 
 # Prints scoreline of finished series.
-def seriesOutput(S):
+def seriesOutput(S, N):
     K = list(S.keys())
     if S[K[0]] > S[K[1]]:
-        print(K[0] + " wins the series by " + str(S[K[0]]) + " - " + str(S[K[1]]))
+        print(K[0] + " wins " + N + " by " + str(S[K[0]]) + " - " + str(S[K[1]]))
     if S[K[0]] < S[K[1]]:
-        print(K[1] + " wins the series by " + str(S[K[1]]) + " - " + str(S[K[0]]))
+        print(K[1] + " wins " + N + " by " + str(S[K[1]]) + " - " + str(S[K[0]]))
     if S[K[0]] == S[K[1]]:
-        print("Series is drawn at " + str(S[K[0]]) + " - " + str(S[K[1]]))
+        print(N + " is drawn at " + str(S[K[0]]) + " - " + str(S[K[1]]))
 
 class Bowler:
     def __init__(self):
@@ -290,6 +359,8 @@ class Bowler:
         self.Wickets = None
         self.Average = None
         self.Figures = None
+        self.Sixes = None
+        self.Fours = None
     def makeStats(self, B):
         Balls = len(B)
         self.Runs = sum(B) - 5*B.count(5)
@@ -302,6 +373,8 @@ class Bowler:
 #           self.Average = self.Runs
             self.Average = None
         self.Figures = 10000*self.Wickets + 1000 - self.Runs
+        self.Sixes = B.count(6)
+        self.Fours = B.count(4)
     def printStats(self):
         print(self.Overs + "-" + str(self.Runs) + "-" + str(self.Wickets) + "-" + str(self.Economy))
 
@@ -310,14 +383,31 @@ class Batter:
         self.runs = 0
         self.strikerate = 0
         self.average = 0
+        self.consistency = 0
+        self.sixes = 0
+        self.fours = 0
     def makeStats(self, Batting):
         Total = 0
         Wickets = 0
+        Scores = []
+        TotalS = 0
         for i in range(0, len(Batting)):
             if isInt(Batting[i]):
                 Total += Batting[i]
+                TotalS += Batting[i]
             else:
                 Wickets += 1
+                Scores.append(TotalS)
+                TotalS = 0
+        if Batting == []:
+            self.average = 0
+            self.runs = 0
+            self.strikerate = 0
+            self.sixes = 0
+            self.fours = 0
+            return
+        if isInt(Batting[-1]):
+            Scores.append(TotalS)
         if Wickets != 0:
             self.average = round(Total/Wickets, 2)
         else:
@@ -327,6 +417,15 @@ class Batter:
             self.strikerate = round(Total/len(Batting) * 100, 2)
         else:
             self.strikerate = 0
+        if Wickets <= 1:
+            self.consistency = Total
+        elif statistics.stdev(Scores) == 0:
+            self.consistency = Total
+        else:
+            self.consistency = 1/statistics.stdev(Scores)
+        self.sixes = Batting.count(6)
+        self.fours = Batting.count(4)
+
 
 A_Team = []
 A_Bowl = []
@@ -653,6 +752,17 @@ def bowlingStats(Order, Balls):
 
 Basic = [0, 1, 2, 3, 4, 5, 6]
 
+def outType(P="P"):
+    if P == "S":
+        P = [0.25, 0.25, 0.25, 0.25]
+        A = ["c", "b", "lbw", "st"]
+        return random.choices(A, P, k = 1)[0]
+    else:
+        P = [0.33, 0.33, 0.33]
+        A = ["c", "b", "lbw"]
+        return random.choices(A, P, k=1)[0]
+
+
 #D = bowlingStats(generate_bowling_order(DistBowl(A_Team, A_Bowl, 20)), getBalls(120, Basic))
 
 def BattingOrder(Team, Bowling, Balls):
@@ -722,11 +832,15 @@ def Combinations(A):
             B.append([A[i], A[j]])
     return random.sample(B, len(B))
 
-def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
+def MatchLimitedOne(Name_1, Team_1, Bowl_1, Type_1, Name_2, Team_2, Bowl_2, Type_2, Format):
     Batting_Score_1 = {}
     Batting_Score_2 = {}
+    Balls_Score_1 = {}
+    Balls_Score_2 = {}
     Batting_Sheet = {}
     Bowling_Perf = {}
+    Bowling_1 = {}
+    Bowling_2 = {}
     Prob = t20
     Overs = 20
     if Format.upper() == "T20":
@@ -739,6 +853,9 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
         Prob = ODI
         Overs = int(input("Number of Overs : "))
     t = input(Name_1 + "'s Call : ")
+    K = ["H", "T"]
+    if t.upper() not in K:
+        t = K[random.randint(0, 1)]
     if t.upper() == Toss():
         T1 = input(Name_1 + " chooses to : ").upper()
         while (T1.upper() not in ["BAT", "BOWL"]):
@@ -747,12 +864,15 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
             Name_3 = Name_1
             Team_3 = Team_1
             Bowl_3 = Bowl_1
+            Type_3 = Type_1
             Name_1 = Name_2
             Team_1 = Team_2
             Bowl_1 = Bowl_2
+            Type_1 = Type_2
             Name_2 = Name_3
             Team_2 = Team_3
             Bowl_2 = Bowl_3
+            Type_2 = Type_3
     else:
         T2 = input(Name_2 + " chooses to : ").upper()
         while (T2.upper() not in ["BAT", "BOWL"]):
@@ -761,12 +881,15 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
             Name_3 = Name_1
             Team_3 = Team_1
             Bowl_3 = Bowl_1
+            Type_3 = Type_1
             Name_1 = Name_2
             Team_1 = Team_2
             Bowl_1 = Bowl_2
+            Type_1 = Type_2
             Name_2 = Name_3
             Team_2 = Team_3
             Bowl_2 = Bowl_3
+            Type_2 = Type_3
 
 
     ### First Innings
@@ -783,10 +906,12 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
             Bowling_Perf[Keys[i]].extend(D[Keys[i]])
         except:
             Bowling_Perf[Keys[i]] = D[Keys[i]]
+    for i in range(len(Keys)):
+        Bowling_1[Keys[i]] = D[Keys[i]]
 
-    print(100*"-")
-    print(Name_1)
-    print(100*"-")
+    print(150*"-")
+    print(Name_1 + (75 - len(Name_1)) * " " + "Runs" + (25 - 4) * " " + "Strike Rate" + 4 * " " + "4s" + 13 * " " + "6s")
+    print(150*"-")
     for i in range(0, len(Team_1)):
         try:
             A = Batting_Stats[Team_1[i]]
@@ -796,27 +921,44 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
             continue
         if A == []:
             s = "0(0)"
-            print(Team_1[i] + "*" + (49 - len(Team_1[i])) * " " + s + (25 - len(s)) * " " + str("-"))
+            print(Team_1[i] + "*" + (74 - len(Team_1[i])) * " " + s + (25 - len(s)) * " " + str("-") + (15 - 1)*" " + str(A.count(4)) + (15 - len(str(A.count(4))))*" " + str(A.count(6)))
             Batting_Score_1[Team_1[i]] = 0
+            Balls_Score_1[Team_1[i]] = 0
             Batting_Sheet[Team_1[i]] = []
             continue
         if isInt(A[-1]):
             s = str(sum(A)) + "(" + str(len(A)) + ")"
-            print(Team_1[i] + "*" + (49 - len(Team_1[i])) * " " + s + (25 - len(s)) * " " + str(round(100 * sum(A)/float(len(A)))))
+            print(Team_1[i] + "*" + (74 - len(Team_1[i])) * " " + s + (25 - len(s)) * " " + str(round(100 * sum(A)/float(len(A)))) + (15 - len(str(round(100 * sum(A)/float(len(A))))))*" " + str(A.count(4)) + (15 - len(str(A.count(4))))*" " + str(A.count(6)))
             Batting_Score_1[Team_1[i]] = sum(A)
+            Balls_Score_1[Team_1[i]] = len(A)
             Batting_Sheet[Team_1[i]] = A
         else:
             Runs = sum(A[:-1])
             Balls = len(A)
             s = str(Runs) + "(" + str(Balls) + ")"
-            W = A[-1]
-            print(Team_1[i] + (25 - len(Team_1[i])) * " " + W + (25 - len(W)) * " " + s + (25 - len(s)) * " " + str(round(100 * Runs/float(Balls))))
+            W = None
+            w = A[-1]
+            O = None
+            if Type_2[Team_2.index(w)] == "P":
+                O = outType("P")
+            else:
+                O = outType("S")
+            if O in ["b", "lbw", "st"]:
+                W = O + " " + w + (19 - len(w)) * " "
+            else:
+                D = Team_2[random.randint(0, 10)]
+                if D == w:
+                    W = "c & b " + w + (19 - len(w)) * " "
+                else:
+                    W = "c " + D + (19 - len(D)) * " " +  " b " + w + (19 - len(w)) * " "
+            print(Team_1[i] + (25 - len(Team_1[i])) * " " + (45 - len(W)) * " " + W + 5 * " " + s + (25 - len(s)) * " " + str(round(100 * Runs / float(Balls))) + (15 - len(str(round(100 * Runs / float(Balls))))) * " " + str(A.count(4)) + (15 - len(str(A.count(4)))) * " " + str(A.count(6)))
             Batting_Score_1[Team_1[i]] = Runs
+            Balls_Score_1[Team_1[i]] = Balls
             Batting_Sheet[Team_1[i]] = A
-    print(100 * "-")
+    print(150 * "-")
     print(Name_1 + " score = " + str(total(Batting_Balls)) + "/" + str(Batting_Balls.count(5)) + " in " + str(len(Batting_Balls) // 6) + "." + str(len(Batting_Balls) % 6) + " overs")
     print("Run Rate = " + str(round(total(Batting_Balls) * 6 / float(len(Batting_Balls)), 2)))
-    print(100*"-")
+    print(150*"-")
     T1 = total(Batting_Balls)
     B1 = Overs * 6
     Total = 0
@@ -828,12 +970,16 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
     Runs = []
     Wickets = []
     Over = []
+    Sixes = []
+    Fours = []
     for i in range(len(Name)):
         Economy.append(Bowling_Stats[Name[i]].Economy)
         Runs.append(Bowling_Stats[Name[i]].Runs)
         Wickets.append(Bowling_Stats[Name[i]].Wickets)
         Over.append(Bowling_Stats[Name[i]].Overs)
-    print(pd.DataFrame({"Name" : Name, "Overs" : Over, "Runs" : Runs, "Wickets" : Wickets, "Economy" : Economy}))
+        Sixes.append(Bowling_Stats[Name[i]].Sixes)
+        Fours.append(Bowling_Stats[Name[i]].Fours)
+    print(pd.DataFrame({"Name" : Name, "Overs" : Over, "Runs" : Runs, "Wickets" : Wickets, "Economy" : Economy, "Fours" : Fours, "Sixes" : Sixes}))
     print(" ")
     Y = input("Fall of Wickets ? : ").upper()
     print(" ")
@@ -848,6 +994,9 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
             S = str(Total) + "/" + str(i + 1)
             print(K[0] + (25 - len(K[0])) * " " + S + (7 - len(S)) * " " + BallsToOvers(Balls))
         print(60 * "-")
+        S = str(total(Batting_Balls)) + "/" + str(Batting_Balls.count(5))
+        print("Total" + 20 * " " + S + (7 - len(S)) * " " + BallsToOvers(len(Batting_Balls)))
+        print(60 * "-")
 
     X = input("Continue ? : ")
     print(" ")
@@ -859,7 +1008,7 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
         if T1 < 235:
             Prob = ODI_target_2
     if Format.upper() == "T20":
-        if T1 >= 180 and T1 < 220:
+        if T1 >= 190 and T1 < 220:
             Prob = t20_target
         if T1 >= 220:
             Prob = t20_target_extreme
@@ -878,10 +1027,12 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
             Bowling_Perf[Keys[i]].extend(D[Keys[i]])
         except:
             Bowling_Perf[Keys[i]] = D[Keys[i]]
+    for i in range(len(Keys)):
+        Bowling_2[Keys[i]] = D[Keys[i]]
 
-    print(100 * "-")
-    print(Name_2)
-    print(100 * "-")
+    print(150 * "-")
+    print(Name_2 + (75 - len(Name_2)) * " " + "Runs" + (25 - 4) * " " + "Strike Rate" + 4 * " " + "4s" + 13 * " " + "6s")
+    print(150 * "-")
     for i in range(0, len(Team_2)):
         try:
             A = Batting_Stats[Team_2[i]]
@@ -891,27 +1042,45 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
             continue
         if A == []:
             s = "0(0)"
-            print(Team_2[i] + "*" + (49 - len(Team_2[i])) * " " + s + (25 - len(s)) * " " + str("-"))
+            print(Team_2[i] + "*" + (74 - len(Team_2[i])) * " " + s + (25 - len(s)) * " " + str("-") + (15 - 1)* " " + str(A.count(4)) + (15 - len(str(A.count(4))))*" " + str(A.count(6)))
             Batting_Score_2[Team_2[i]] = 0
+            Balls_Score_2[Team_2[i]] = 0
             Batting_Sheet[Team_2[i]] = []
             continue
         if isInt(A[-1]):
             s = str(sum(A)) + "(" + str(len(A)) + ")"
-            print(Team_2[i] + "*" + (49 - len(Team_2[i])) * " " + s + (25 - len(s)) * " " + str(round(100 * sum(A) / float(len(A)))))
+            print(Team_2[i] + "*" + (74 - len(Team_2[i])) * " " + s + (25 - len(s)) * " " + str(round(100 * sum(A) / float(len(A)))) + (15 - len(str(round(100 * sum(A)/float(len(A))))))* " " + str(A.count(4)) + (15 - len(str(A.count(4))))*" " + str(A.count(6)))
             Batting_Score_2[Team_2[i]] = sum(A)
+            Balls_Score_2[Team_2[i]] = len(A)
             Batting_Sheet[Team_2[i]] = A
         else:
             Runs = sum(A[:-1])
             Balls = len(A)
             s = str(Runs) + "(" + str(Balls) + ")"
-            W = A[-1]
-            print(Team_2[i] + (25 - len(Team_2[i])) * " " + W + (25 - len(W)) * " " + s + (25 - len(s)) * " " + str(round(100 * Runs / float(Balls))))
+            W = None
+            w = A[-1]
+            O = None
+            if Type_1[Team_1.index(w)] == "P":
+                O = outType("P")
+            else:
+                O = outType("S")
+            if O in ["b", "lbw", "st"]:
+                W = O + " " + w + (19 - len(w)) * " "
+            else:
+                D = Team_1[random.randint(0, 10)]
+                if D == w:
+                    W = "c & b " + w + (19 - len(w)) * " "
+                else:
+                    W = "c " + D + (19 - len(D)) * " " + " b " + w + (19 - len(w)) * " "
+#            print(Team_2[i] + (25 - len(Team_2[i])) * " " + W + (50 - len(W)) * " " + s + (25 - len(s)) * " " + str(round(100 * Runs / float(Balls))) + (15 - len(str(round(100 * Runs/float(Balls)))))*" " + str(A.count(4)) + (15 - len(str(A.count(4))))*" " + str(A.count(6)))
+            print(Team_2[i] + (25 - len(Team_2[i])) * " " + (45 - len(W)) * " " + W + 5 * " " + s + (25 - len(s)) * " " + str(round(100 * Runs / float(Balls))) + (15 - len(str(round(100 * Runs / float(Balls))))) * " " + str(A.count(4)) + (15 - len(str(A.count(4)))) * " " + str(A.count(6)))
             Batting_Score_2[Team_2[i]] = Runs
+            Balls_Score_2[Team_2[i]] = Balls
             Batting_Sheet[Team_2[i]] = A
-    print(100 * "-")
+    print(150 * "-")
     print(Name_2 + " score = " + str(total(Batting_Balls)) + "/" + str(Batting_Balls.count(5)) + " in " + str(len(Batting_Balls) // 6) + "." + str(len(Batting_Balls) % 6) + " overs")
     print("Run Rate = " + str(round(total(Batting_Balls) * 6 / float(len(Batting_Balls)), 2)))
-    print(100 * "-")
+    print(150 * "-")
     Total = 0
     Balls = 0
     print("")
@@ -922,26 +1091,140 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
     Runs = []
     Wickets = []
     Overs = []
+    Sixes = []
+    Fours = []
     for i in range(len(Name)):
         Economy.append(Bowling_Stats[Name[i]].Economy)
         Runs.append(Bowling_Stats[Name[i]].Runs)
         Wickets.append(Bowling_Stats[Name[i]].Wickets)
         Overs.append(Bowling_Stats[Name[i]].Overs)
-    print(pd.DataFrame({"Name": Name, "Overs": Overs, "Runs": Runs, "Wickets": Wickets, "Economy": Economy}))
+        Sixes.append(Bowling_Stats[Name[i]].Sixes)
+        Fours.append(Bowling_Stats[Name[i]].Fours)
+    print(pd.DataFrame({"Name": Name, "Overs": Overs, "Runs": Runs, "Wickets": Wickets, "Economy": Economy, "Fours" : Fours, "Sixes" : Sixes}))
     T2 = total(Batting_Balls)
     B2 = len(Batting_Balls)
     print(" ")
     Winner = None
     if T1 > T2:
-        print(Name_1 + " wins by " + str(T1 - T2) + " runs.")
+        print(Name_1 + " wins by " + str(T1 - T2) + " runs!")
         Winner = Name_1
     if T1 == T2:
         print("It's a draw!!!")
         Winner = None
     if T1 < T2:
-        print(Name_2 + " wins by " + str(10 - Batting_Balls.count(5)) + " wickets.")
+        print(Name_2 + " wins by " + str(10 - Batting_Balls.count(5)) + " wickets!")
         Winner = Name_2
+    Impact_Points = {}
+    for i in range(0, len(Team_1)):
+        try:
+            Impact_Points[Team_1[i]] = Batting_Score_1[Team_1[i]]**2 / Balls_Score_1[Team_1[i]]
+            if Batting_Score_1[Team_1[i]] >= 50:
+                Impact_Points[Team_1[i]] += 25
+            if Batting_Score_1[Team_1[i]] >= 100:
+                Impact_Points[Team_1[i]] += 50
+        except:
+            x = 5
+        try:
+            A = Bowling_2[Team_1[i]]
+            if Team_1[i] in Impact_Points.keys():
+                if Format == "T20":
+                    Impact_Points[Team_1[i]] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if Format == "ODI":
+                    Impact_Points[Team_1[i]] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if A.count(5) >= 3:
+                    Impact_Points[Team_1[i]] += 25
+                if A.count(5) >= 5:
+                    Impact_Points[Team_1[i]] += 50
+            else:
+                if Format == "T20":
+                    Impact_Points[Team_1[i]] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if Format == "ODI":
+                    Impact_Points[Team_1[i]] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if A.count(5) >= 3:
+                    Impact_Points[Team_1[i]] += 25
+                if A.count(5) >= 5:
+                    Impact_Points[Team_1[i]] += 50
+        except:
+            x = 5
+
+    for i in range(0, len(Team_2)):
+        try:
+            if Team_2[i] in Impact_Points.keys():
+                Impact_Points[Team_2[i]] += Batting_Score_2[Team_2[i]]**2 / Balls_Score_2[Team_2[i]]
+                if Batting_Score_2[Team_2[i]] >= 50:
+                    Impact_Points[Team_2[i]] += 25
+                if Batting_Score_2[Team_2[i]] >= 100:
+                    Impact_Points[Team_2[i]] += 50
+            else:
+                Impact_Points[Team_2[i]] = Batting_Score_2[Team_2[i]] ** 2 / Balls_Score_2[Team_2[i]]
+                if Batting_Score_2[Team_2[i]] >= 50:
+                    Impact_Points[Team_2[i]] += 25
+                if Batting_Score_2[Team_2[i]] >= 100:
+                    Impact_Points[Team_2[i]] += 50
+        except:
+            x = 5
+        try:
+            A = Bowling_1[Team_2[i]]
+            if Team_2[i] in Impact_Points.keys():
+                if Format == "T20":
+                    Impact_Points[Team_2[i]] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if Format == "ODI":
+                    Impact_Points[Team_2[i]] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if A.count(5) >= 3:
+                    Impact_Points[Team_2[i]] += 25
+                if A.count(5) >= 5:
+                    Impact_Points[Team_2[i]] += 50
+            else:
+                if Format == "T20":
+                    Impact_Points[Team_2[i]] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if Format == "ODI":
+                    Impact_Points[Team_2[i]] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if A.count(5) >= 3:
+                    Impact_Points[Team_2[i]] += 25
+                if A.count(5) >= 5:
+                    Impact_Points[Team_2[i]] += 50
+        except:
+            x = 5
+    if Winner == Name_1:
+        for i in range(len(Team_1)):
+            try:
+                if Format == "T20":
+                    Impact_Points[Team_1[i]] += 100
+                if Format == "ODI":
+                    Impact_Points[Team_1[i]] += 250
+            except:
+                if Format == "T20":
+                    Impact_Points[Team_1[i]] = 100
+                if Format == "ODI":
+                    Impact_Points[Team_1[i]] = 250
+    if Winner == Name_2:
+        for i in range(len(Team_2)):
+            try:
+                if Format == "T20":
+                    Impact_Points[Team_2[i]] += 100
+                if Format == "ODI":
+                    Impact_Points[Team_2[i]] += 250
+            except:
+                if Format == "T20":
+                    Impact_Points[Team_2[i]] = 100
+                if Format == "ODI":
+                    Impact_Points[Team_2[i]] = 250
+
+    Impact_Sorted_Dict = dict(sorted(Impact_Points.items(), key=lambda x: x[1], reverse=True))
+    Impact_Sorted = list(Impact_Sorted_Dict.keys())
     print("")
+    if Impact_Sorted[0] in Team_1:
+        print("Player of the Match - " + Impact_Sorted[0] + " (" + Name_1 + ")")
+    else:
+        print("Player of the Match - " + Impact_Sorted[0] + " (" + Name_2 + ")")
+    print("")
+    """
+    if Impact_Sorted[-1] in Team_1:
+        print("Flog of the Match - " + Impact_Sorted[-1] + " (" + Name_1 + ")")
+    else:
+        print("Flog of the Match - " + Impact_Sorted[-1] + " (" + Name_2 + ")")
+    print("")
+    """
     Y = input("Fall of Wickets ? : ").upper()
     print(" ")
     if Y != "N":
@@ -955,6 +1238,9 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
             S = str(Total) + "/" + str(i + 1)
             print(K[0] + (25 - len(K[0])) * " " + S + (7 - len(S)) * " " + BallsToOvers(Balls))
         print(60 * "-")
+        S = str(total(Batting_Balls)) + "/" + str(Batting_Balls.count(5))
+        print("Total" + 20*" " + S + (7 - len(S)) * " " + BallsToOvers(len(Batting_Balls)))
+        print(60 * "-")
         print(" ")
     NRR_Dict = {}
     NRR_Dict[Name_1] = [T1, B1]
@@ -962,12 +1248,12 @@ def MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format):
         NRR_Dict[Name_2] = [T2, B1]
     else:
         NRR_Dict[Name_2] = [T2, B2]
-    return Winner, Batting_Score_1, Batting_Score_2, Batting_Sheet, Bowling_Perf, NRR_Dict
+    return Winner, Batting_Score_1, Batting_Score_2, Balls_Score_1, Balls_Score_2, Bowling_1, Bowling_2, Batting_Sheet, Bowling_Perf, NRR_Dict
 
 #Format = input("Format : ").upper()
 #MatchLimitedOne("A", A_Team, A_Bowl, "B", B_Team, B_Bowl, Format)
 
-def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
+def MatchTestOne(Name_1, Team_1, Bowl_1, Type_1, Name_2, Team_2, Bowl_2, Type_2):
     Batting_Score_1 = {}
     Batting_Score_2 = {}
     Batting_Score_3 = {}
@@ -986,6 +1272,9 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
         print("Match Conditions - Green pitch")
     print("")
     t = input(Name_1 + "'s Call : ")
+    K = ["H", "T"]
+    if t.upper() not in K:
+        t = K[random.randint(0, 1)]
     if t.upper() == Toss():
         T1 = input(Name_1 + " chooses to : ").upper()
         while (T1.upper() not in ["BAT", "BOWL"]):
@@ -994,12 +1283,15 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
             Name_3 = Name_1
             Team_3 = Team_1
             Bowl_3 = Bowl_1
+            Type_3 = Type_1
             Name_1 = Name_2
             Team_1 = Team_2
             Bowl_1 = Bowl_2
+            Type_1 = Type_2
             Name_2 = Name_3
             Team_2 = Team_3
             Bowl_2 = Bowl_3
+            Type_2 = Type_3
     else:
         T2 = input(Name_2 + " chooses to : ").upper()
         while (T2.upper() not in ["BAT", "BOWL"]):
@@ -1008,12 +1300,15 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
             Name_3 = Name_1
             Team_3 = Team_1
             Bowl_3 = Bowl_1
+            Type_3 = Type_1
             Name_1 = Name_2
             Team_1 = Team_2
             Bowl_1 = Bowl_2
+            Type_1 = Type_2
             Name_2 = Name_3
             Team_2 = Team_3
             Bowl_2 = Bowl_3
+            Type_2 = Type_3
 
 
     ### First Innings
@@ -1029,9 +1324,10 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
     for i in range(len(Keys)):
         Bowling_1[Keys[i]] = D[Keys[i]]
 
-    print(100*"-")
-    print(Name_1)
-    print(100*"-")
+    print(150*"-")
+#    print(Name_1)
+    print(Name_1 + (75 - len(Name_1)) * " " + "Runs" + (25 - 4) * " " + "Strike Rate" + 4*" " + "4s" + 13*" " + "6s")
+    print(150*"-")
     for i in range(0, len(Team_1)):
         try:
             A = Batting_Stats[Team_1[i]]
@@ -1041,27 +1337,42 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
             continue
         if A == []:
             s = "0(0)"
-            print(Team_1[i] + "*" + (49 - len(Team_1[i])) * " " + s + (25 - len(s)) * " " + str("-"))
+            print(Team_1[i] + "*" + (74 - len(Team_1[i])) * " " + s + (25 - len(s)) * " " + str("-") + (15 - 1)*" " + str(A.count(4)) + (15 - len(str(A.count(4))))*" " + str(A.count(6)))
             Batting_Score_1[Team_1[i]] = 0
             Batting_Sheet[Team_1[i]] = []
             continue
         if isInt(A[-1]):
             s = str(sum(A)) + "(" + str(len(A)) + ")"
-            print(Team_1[i] + "*" + (49 - len(Team_1[i])) * " " + s + (25 - len(s)) * " " + str(round(100 * sum(A)/float(len(A)))))
+            print(Team_1[i] + "*" + (74 - len(Team_1[i])) * " " + s + (25 - len(s)) * " " + str(round(100 * sum(A)/float(len(A)))) + (15 - len(str(round(100 * sum(A)/float(len(A))))))*" " + str(A.count(4)) + (15 - len(str(A.count(4))))*" " + str(A.count(6)))
             Batting_Score_1[Team_1[i]] = sum(A)
             Batting_Sheet[Team_1[i]] = A
         else:
             Runs = sum(A[:-1])
             Balls = len(A)
             s = str(Runs) + "(" + str(Balls) + ")"
-            W = A[-1]
-            print(Team_1[i] + (25 - len(Team_1[i])) * " " + W + (25 - len(W)) * " " + s + (25 - len(s)) * " " + str(round(100 * Runs/float(Balls))))
+            W = None
+            w = A[-1]
+            O = None
+            if Type_2[Team_2.index(w)] == "P":
+                O = outType("P")
+            else:
+                O = outType("S")
+
+            if O in ["b", "lbw", "st"]:
+                W = O + " " + w + (19 - len(w)) * " "
+            else:
+                D = Team_2[random.randint(0, 10)]
+                if D == w:
+                    W = "c & b " + w + (19 - len(w)) * " "
+                else:
+                    W = "c " + D + (19 - len(D)) * " " + " b " + w + (19 - len(w)) * " "
+            print(Team_1[i] + (25 - len(Team_1[i])) * " " + (45 - len(W)) * " " + W + 5 * " " + s + (25 - len(s)) * " " + str(round(100 * Runs / float(Balls))) + (15 - len(str(round(100 * Runs / float(Balls))))) * " " + str(A.count(4)) + (15 - len(str(A.count(4)))) * " " + str(A.count(6)))
             Batting_Score_1[Team_1[i]] = Runs
             Batting_Sheet[Team_1[i]] = A
-    print(100 * "-")
+    print(150 * "-")
     print(Name_1 + " score = " + str(total(Batting_Balls)) + "/" + str(Batting_Balls.count(5)) + " in " + str(len(Batting_Balls) // 6) + "." + str(len(Batting_Balls) % 6) + " overs")
     print("Run Rate = " + str(round(total(Batting_Balls) * 6 / float(len(Batting_Balls)), 2)))
-    print(100*"-")
+    print(150*"-")
     T1 = total(Batting_Balls)
     Total = 0
     Balls = 0
@@ -1072,13 +1383,17 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
     Runs = []
     Wickets = []
     Over = []
+    Sixes = []
+    Fours = []
     for i in range(len(Name)):
         Economy.append(Bowling_Stats[Name[i]].Economy)
         Runs.append(Bowling_Stats[Name[i]].Runs)
         Wickets.append(Bowling_Stats[Name[i]].Wickets)
         Over.append(Bowling_Stats[Name[i]].Overs)
+        Sixes.append(Bowling_Stats[Name[i]].Sixes)
+        Fours.append(Bowling_Stats[Name[i]].Fours)
 
-    print(pd.DataFrame({"Name" : Name, "Overs" : Over, "Runs" : Runs, "Wickets" : Wickets, "Economy" : Economy}))
+    print(pd.DataFrame({"Name" : Name, "Overs" : Over, "Runs" : Runs, "Wickets" : Wickets, "Economy" : Economy, "Fours" : Fours, "Sixes" : Sixes}))
     print(" ")
     Y = input("Fall of Wickets ? : ").upper()
     print(" ")
@@ -1092,6 +1407,9 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
             Balls += K[2]
             S = str(Total) + "/" + str(i + 1)
             print(K[0] + (25 - len(K[0])) * " " + S + (7 - len(S)) * " " + BallsToOvers(Balls))
+        print(60 * "-")
+        S = str(total(Batting_Balls)) + "/" + str(Batting_Balls.count(5))
+        print("Total" + 20 * " " + S + (7 - len(S)) * " " + BallsToOvers(len(Batting_Balls)))
         print(60 * "-")
         print("")
     X = input("Continue ? : ")
@@ -1110,9 +1428,9 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
 
     for i in range(len(Keys)):
         Bowling_2[Keys[i]] = D[Keys[i]]
-    print(100 * "-")
-    print(Name_2)
-    print(100 * "-")
+    print(150 * "-")
+    print(Name_2 + (75 - len(Name_2)) * " " + "Runs" + (25 - 4) * " " + "Strike Rate" + 4 * " " + "4s" + 13 * " " + "6s")
+    print(150 * "-")
     for i in range(0, len(Team_2)):
         try:
             A = Batting_Stats[Team_2[i]]
@@ -1122,27 +1440,41 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
             continue
         if A == []:
             s = "0(0)"
-            print(Team_2[i] + "*" + (49 - len(Team_2[i])) * " " + s + (25 - len(s)) * " " + str("-"))
+            print(Team_2[i] + "*" + (74 - len(Team_2[i])) * " " + s + (25 - len(s)) * " " + str("-")  + (15 - 1)*" " + str(A.count(4)) + (15 - len(str(A.count(4))))*" " + str(A.count(6)))
             Batting_Score_2[Team_2[i]] = 0
             Batting_Sheet[Team_2[i]] = []
             continue
         if isInt(A[-1]):
             s = str(sum(A)) + "(" + str(len(A)) + ")"
-            print(Team_2[i] + "*" + (49 - len(Team_2[i])) * " " + s + (25 - len(s)) * " " + str(round(100 * sum(A) / float(len(A)))))
+            print(Team_2[i] + "*" + (74 - len(Team_2[i])) * " " + s + (25 - len(s)) * " " + str(round(100 * sum(A) / float(len(A)))) + (15 - len(str(round(100 * sum(A)/float(len(A))))))* " " + str(A.count(4)) + (15 - len(str(A.count(4))))*" " + str(A.count(6)))
             Batting_Score_2[Team_2[i]] = sum(A)
             Batting_Sheet[Team_2[i]] = A
         else:
             Runs = sum(A[:-1])
             Balls = len(A)
             s = str(Runs) + "(" + str(Balls) + ")"
-            W = A[-1]
-            print(Team_2[i] + (25 - len(Team_2[i])) * " " + W + (25 - len(W)) * " " + s + (25 - len(s)) * " " + str(round(100 * Runs / float(Balls))))
+            W = None
+            w = A[-1]
+            O = None
+            if Type_1[Team_1.index(w)] == "P":
+                O = outType("P")
+            else:
+                O = outType("S")
+            if O in ["b", "lbw", "st"]:
+                W = O + " " + w + (19 - len(w)) * " "
+            else:
+                D = Team_1[random.randint(0, 10)]
+                if D == w:
+                    W = "c & b " + w + (19 - len(w)) * " "
+                else:
+                    W = "c " + D + (19 - len(D)) * " " + " b " + w + (19 - len(w)) * " "
+            print(Team_2[i] + (25 - len(Team_2[i])) * " " + (45 - len(W)) * " " + W + 5 * " " + s + (25 - len(s)) * " " + str(round(100 * Runs / float(Balls))) + (15 - len(str(round(100 * Runs / float(Balls))))) * " " + str(A.count(4)) + (15 - len(str(A.count(4)))) * " " + str(A.count(6)))
             Batting_Score_2[Team_2[i]] = Runs
             Batting_Sheet[Team_2[i]] = A
-    print(100 * "-")
+    print(150 * "-")
     print(Name_2 + " score = " + str(total(Batting_Balls)) + "/" + str(Batting_Balls.count(5)) + " in " + str(len(Batting_Balls) // 6) + "." + str(len(Batting_Balls) % 6) + " overs")
     print("Run Rate = " + str(round(total(Batting_Balls) * 6 / float(len(Batting_Balls)), 2)))
-    print(100 * "-")
+    print(150 * "-")
     print("")
 
     print(Name_1 + " Bowling")
@@ -1151,12 +1483,17 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
     Runs = []
     Wickets = []
     Overs = []
+    Sixes = []
+    Fours = []
     for i in range(len(Name)):
         Economy.append(Bowling_Stats[Name[i]].Economy)
         Runs.append(Bowling_Stats[Name[i]].Runs)
         Wickets.append(Bowling_Stats[Name[i]].Wickets)
         Overs.append(Bowling_Stats[Name[i]].Overs)
-    print(pd.DataFrame({"Name": Name, "Overs": Overs, "Runs": Runs, "Wickets": Wickets, "Economy": Economy}))
+        Sixes.append(Bowling_Stats[Name[i]].Sixes)
+        Fours.append(Bowling_Stats[Name[i]].Fours)
+
+    print(pd.DataFrame({"Name": Name, "Overs": Overs, "Runs": Runs, "Wickets": Wickets, "Economy": Economy, "Fours" : Fours, "Sixes" : Sixes}))
     T2 = total(Batting_Balls)
     print("")
     if T1 > T2:
@@ -1181,6 +1518,9 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
             S = str(Total) + "/" + str(i + 1)
             print(K[0] + (25 - len(K[0])) * " " + S + (7 - len(S)) * " " + BallsToOvers(Balls))
         print(60 * "-")
+        S = str(total(Batting_Balls)) + "/" + str(Batting_Balls.count(5))
+        print("Total" + 20 * " " + S + (7 - len(S)) * " " + BallsToOvers(len(Batting_Balls)))
+        print(60 * "-")
     print(" ")
     X = input("Continue ? : ").upper()
     # Third Innings
@@ -1197,9 +1537,9 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
     for i in range(len(Keys)):
         Bowling_3[Keys[i]] = D[Keys[i]]
 
-    print(100 * "-")
-    print(Name_1)
-    print(100 * "-")
+    print(150 * "-")
+    print(Name_1 + (75 - len(Name_1)) * " " + "Runs" + (25 - 4) * " " + "Strike Rate" + 4*" " + "4s" + 13*" " + "6s")
+    print(150 * "-")
     for i in range(0, len(Team_1)):
         try:
             A = Batting_Stats[Team_1[i]]
@@ -1209,7 +1549,7 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
             continue
         if A == []:
             s = "0(0)"
-            print(Team_1[i] + "*" + (49 - len(Team_1[i])) * " " + s + (25 - len(s)) * " " + str("-"))
+            print(Team_1[i] + "*" + (74 - len(Team_1[i])) * " " + s + (25 - len(s)) * " " + str("-") + (15 - 1)*" " + str(A.count(4)) + (15 - len(str(A.count(4))))*" " + str(A.count(6)))
             try:
                 Batting_Sheet[Team_1[i]].extend([])
             except:
@@ -1218,7 +1558,7 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
             continue
         if isInt(A[-1]):
             s = str(sum(A)) + "(" + str(len(A)) + ")"
-            print(Team_1[i] + "*" + (49 - len(Team_1[i])) * " " + s + (25 - len(s)) * " " + str(round(100 * sum(A) / float(len(A)))))
+            print(Team_1[i] + "*" + (74 - len(Team_1[i])) * " " + s + (25 - len(s)) * " " + str(round(100 * sum(A) / float(len(A)))) + (15 - len(str(round(100 * sum(A)/float(len(A))))))*" " + str(A.count(4)) + (15 - len(str(A.count(4))))*" " + str(A.count(6)))
             try:
                 Batting_Sheet[Team_1[i]].extend(A)
             except:
@@ -1228,18 +1568,32 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
             Runs = sum(A[:-1])
             Balls = len(A)
             s = str(Runs) + "(" + str(Balls) + ")"
-            W = A[-1]
-            print(Team_1[i] + (25 - len(Team_1[i])) * " " + W + (25 - len(W)) * " " + s + (25 - len(s)) * " " + str(round(100 * Runs / float(Balls))))
+            W = None
+            w = A[-1]
+            O = None
+            if Type_2[Team_2.index(w)] == "P":
+                O = outType("P")
+            else:
+                O = outType("S")
+            if O in ["b", "lbw", "st"]:
+                W = O + " " + w + (19 - len(w)) * " "
+            else:
+                D = Team_2[random.randint(0, 10)]
+                if D == w:
+                    W = "c & b " + w + (19 - len(w)) * " "
+                else:
+                    W = "c " + D + (19 - len(D)) * " " + " b " + w + (19 - len(w)) * " "
+            print(Team_1[i] + (25 - len(Team_1[i])) * " " + (45 - len(W)) * " " + W + 5 * " " + s + (25 - len(s)) * " " + str(round(100 * Runs / float(Balls))) + (15 - len(str(round(100 * Runs / float(Balls))))) * " " + str(A.count(4)) + (15 - len(str(A.count(4)))) * " " + str(A.count(6)))
             try:
                 Batting_Sheet[Team_1[i]].extend(A)
             except:
                 Batting_Sheet[Team_1[i]] = A
             Batting_Score_3[Team_1[i]] = Runs
 
-    print(100 * "-")
+    print(150 * "-")
     print(Name_1 + " score = " + str(total(Batting_Balls)) + "/" + str(Batting_Balls.count(5)) + " in " + str(len(Batting_Balls) // 6) + "." + str(len(Batting_Balls) % 6) + " overs")
     print("Run Rate = " + str(round(total(Batting_Balls) * 6 / float(len(Batting_Balls)), 2)))
-    print(100 * "-")
+    print(150 * "-")
     T3 = total(Batting_Balls)
     Total = 0
     Balls = 0
@@ -1250,17 +1604,22 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
     Runs = []
     Wickets = []
     Over = []
+    Sixes = []
+    Fours = []
     for i in range(len(Name)):
         Economy.append(Bowling_Stats[Name[i]].Economy)
         Runs.append(Bowling_Stats[Name[i]].Runs)
         Wickets.append(Bowling_Stats[Name[i]].Wickets)
         Over.append(Bowling_Stats[Name[i]].Overs)
-    print(pd.DataFrame({"Name": Name, "Overs": Over, "Runs": Runs, "Wickets": Wickets, "Economy": Economy}))
+        Sixes.append(Bowling_Stats[Name[i]].Sixes)
+        Fours.append(Bowling_Stats[Name[i]].Fours)
+
+    print(pd.DataFrame({"Name": Name, "Overs": Over, "Runs": Runs, "Wickets": Wickets, "Economy": Economy, "Fours" : Fours, "Sixes" : Sixes}))
     print(" ")
     if T1 + T3 < T2:
-        print(Name_2 + " wins the match by an innings and " + str(T2 - T1 - T3) + " runs.")
+        print(Name_2 + " wins the match by an innings and " + str(T2 - T1 - T3) + " runs!")
     else:
-        print("Target for " + Name_2 + " - " + str(T1 + T3 - T2 + 1) + " runs.")
+        print("Target for " + Name_2 + " - " + str(T1 + T3 - T2 + 1) + " runs")
     if T1 + T3 >= T2:
         print(" ")
         Y = input("Fall of Wickets ? : ").upper()
@@ -1275,6 +1634,9 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
                Balls += K[2]
                S = str(Total) + "/" + str(i + 1)
                print(K[0] + (25 - len(K[0])) * " " + S + (7 - len(S)) * " " + BallsToOvers(Balls))
+            print(60 * "-")
+            S = str(total(Batting_Balls)) + "/" + str(Batting_Balls.count(5))
+            print("Total" + 20 * " " + S + (7 - len(S)) * " " + BallsToOvers(len(Batting_Balls)))
             print(60 * "-")
     if T1 + T3 < T2:
         Impact_Points = {}
@@ -1354,6 +1716,9 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
                 S = str(Total) + "/" + str(i + 1)
                 print(K[0] + (25 - len(K[0])) * " " + S + (7 - len(S)) * " " + BallsToOvers(Balls))
         print(60 * "-")
+        S = str(total(Batting_Balls)) + "/" + str(Batting_Balls.count(5))
+        print("Total" + 20 * " " + S + (7 - len(S)) * " " + BallsToOvers(len(Batting_Balls)))
+        print(60 * "-")
         return Name_2, Batting_Score_1, Batting_Score_2, Batting_Score_3, Batting_Score_4, Batting_Sheet, Bowling_1, Bowling_2, Bowling_3, Bowling_4, {Name_1 : [T1 + T3, 20], Name_2 : [T2, 10]}
     X = input("Continue ? : ")
     print(" ")
@@ -1370,9 +1735,9 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
     for i in range(len(Keys)):
         Bowling_4[Keys[i]] = D[Keys[i]]
 
-    print(100 * "-")
-    print(Name_2)
-    print(100 * "-")
+    print(150 * "-")
+    print(Name_2 + (75 - len(Name_2)) * " " + "Runs" + (25 - 4) * " " + "Strike Rate" + 4*" " + "4s" + 13*" " + "6s")
+    print(150 * "-")
     for i in range(0, len(Team_2)):
         try:
             A = Batting_Stats[Team_2[i]]
@@ -1382,7 +1747,7 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
             continue
         if A == []:
             s = "0(0)"
-            print(Team_2[i] + "*" + (49 - len(Team_2[i])) * " " + s + (25 - len(s)) * " " + str("-"))
+            print(Team_2[i] + "*" + (74 - len(Team_2[i])) * " " + s + (25 - len(s)) * " " + str("-") + (15 - 1)*" " + str(A.count(4)) + (15 - len(str(A.count(4))))*" " + str(A.count(6)))
             try:
                 Batting_Sheet[Team_2[i]].extend([])
             except:
@@ -1391,7 +1756,7 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
             continue
         if isInt(A[-1]):
             s = str(sum(A)) + "(" + str(len(A)) + ")"
-            print(Team_2[i] + "*" + (49 - len(Team_2[i])) * " " + s + (25 - len(s)) * " " + str(round(100 * sum(A) / float(len(A)))))
+            print(Team_2[i] + "*" + (74 - len(Team_2[i])) * " " + s + (25 - len(s)) * " " + str(round(100 * sum(A) / float(len(A)))) + (15 - len(str(round(100 * sum(A)/float(len(A))))))*" " + str(A.count(4)) + (15 - len(str(A.count(4))))*" " + str(A.count(6)))
             try:
                 Batting_Sheet[Team_2[i]].extend(A)
             except:
@@ -1402,17 +1767,31 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
             Runs = sum(A[:-1])
             Balls = len(A)
             s = str(Runs) + "(" + str(Balls) + ")"
-            W = A[-1]
-            print(Team_2[i] + (25 - len(Team_2[i])) * " " + W + (25 - len(W)) * " " + s + (25 - len(s)) * " " + str(round(100 * Runs / float(Balls))))
+            W = None
+            w = A[-1]
+            O = None
+            if Type_1[Team_1.index(w)] == "P":
+                O = outType("P")
+            else:
+                O = outType("S")
+            if O in ["b", "lbw", "st"]:
+                W = O + " " + w + (19 - len(w)) * " "
+            else:
+                D = Team_1[random.randint(0, 10)]
+                if D == w:
+                    W = "c & b " + w + (19 - len(w)) * " "
+                else:
+                    W = "c " + D + (19 - len(D)) * " " + " b " + w + (19 - len(w)) * " "
+            print(Team_2[i] + (25 - len(Team_2[i])) * " " + (45 - len(W)) * " " + W + 5 * " " + s + (25 - len(s)) * " " + str(round(100 * Runs / float(Balls))) + (15 - len(str(round(100 * Runs / float(Balls))))) * " " + str(A.count(4)) + (15 - len(str(A.count(4)))) * " " + str(A.count(6)))
             try:
                 Batting_Sheet[Team_2[i]].extend(A)
             except:
                 Batting_Sheet[Team_2[i]] = A
             Batting_Score_4[Team_2[i]] = Runs
-    print(100 * "-")
+    print(150 * "-")
     print(Name_2 + " score = " + str(total(Batting_Balls)) + "/" + str(Batting_Balls.count(5)) + " in " + str(len(Batting_Balls) // 6) + "." + str(len(Batting_Balls) % 6) + " overs")
     print("Run Rate = " + str(round(total(Batting_Balls) * 6 / float(len(Batting_Balls)), 2)))
-    print(100 * "-")
+    print(150 * "-")
     Total = 0
     Balls = 0
     print("")
@@ -1423,24 +1802,29 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
     Runs = []
     Wickets = []
     Overs = []
+    Sixes = []
+    Fours = []
     for i in range(len(Name)):
         Economy.append(Bowling_Stats[Name[i]].Economy)
         Runs.append(Bowling_Stats[Name[i]].Runs)
         Wickets.append(Bowling_Stats[Name[i]].Wickets)
         Overs.append(Bowling_Stats[Name[i]].Overs)
-    print(pd.DataFrame({"Name": Name, "Overs": Overs, "Runs": Runs, "Wickets": Wickets, "Economy": Economy}))
+        Sixes.append(Bowling_Stats[Name[i]].Sixes)
+        Fours.append(Bowling_Stats[Name[i]].Fours)
+
+    print(pd.DataFrame({"Name": Name, "Overs": Overs, "Runs": Runs, "Wickets": Wickets, "Economy": Economy, "Fours" : Fours, "Sixes" : Sixes}))
     T4 = total(Batting_Balls)
     print("")
     Winner = None
     if T1 + T3 > T2 + T4:
-        print(Name_1 + " wins by " + str(T1 + T3 - T2 - T4) + " runs.")
+        print(Name_1 + " wins by " + str(T1 + T3 - T2 - T4) + " runs!")
         Winner = Name_1
     if T1 + T3 < T2 + T4:
         if Batting_Balls.count(5) != 9:
-            print(Name_2 + " wins by " + str(10 - Batting_Balls.count(5)) + " wickets.")
+            print(Name_2 + " wins by " + str(10 - Batting_Balls.count(5)) + " wickets!")
             Winner = Name_2
         else:
-            print(Name_2 + " wins by 1 wicket.")
+            print(Name_2 + " wins by 1 wicket!")
             Winner = Name_2
     if T1 + T3 == T2 + T4:
         print("It is a tie!")
@@ -1537,6 +1921,9 @@ def MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2):
             S = str(Total) + "/" + str(i + 1)
             print(K[0] + (25 - len(K[0])) * " " + S + (7 - len(S)) * " " + BallsToOvers(Balls))
         print(60 * "-")
+        S = str(total(Batting_Balls)) + "/" + str(Batting_Balls.count(5))
+        print("Total" + 20 * " " + S + (7 - len(S)) * " " + BallsToOvers(len(Batting_Balls)))
+        print(60 * "-")
     print(" ")
     return Winner, Batting_Score_1, Batting_Score_2, Batting_Score_3, Batting_Score_4, Batting_Sheet, Bowling_1, Bowling_2, Bowling_3, Bowling_4, {Name_1 : [T1 + T3, 20], Name_2 : [T2 + T4, 10 + Batting_Balls.count(5)]}
 
@@ -1549,19 +1936,23 @@ def Series():
     Name_1 = None
     Team_1 = None
     Bowl_1 = None
+    Type_1 = None
     Name_2 = None
     Team_2 = None
     Bowl_2 = None
+    Type_2 = None
     if P == "C":
         Name_2 = input("Home Team Name : ").upper()
         Team_2 = input("Home Team : ").split(",")
         Bowl_2 = input("Home Team Bowling : ").split(",")
+        Type_2 = input("Home Team Bowling Type : ").split(",")
         for i in range(len(Bowl_2)):
             Bowl_2[i] = float(Bowl_2[i])
 
         Name_1 = input("Visiting Team Name : ").upper()
         Team_1 = input("Visiting Team : ").split(",")
         Bowl_1 = input("Visiting Team Bowling : ").split(",")
+        Type_1 = input("Visiting Team Bowling Type : ").split(",")
         for i in range(len(Bowl_1)):
             Bowl_1[i] = float(Bowl_1[i])
 
@@ -1570,11 +1961,14 @@ def Series():
         pos = t.index(Name_2)
         Team_2 = Teams[pos].split(",")
         Bowl_2 = TeamBowl[pos]
+        Type_2 = TeamType[pos]
 
         Name_1 = input("Visiting Team Name : ").upper()
         pos = t.index(Name_1)
         Team_1 = Teams[pos].split(",")
         Bowl_1 = TeamBowl[pos]
+        Type_1 = TeamType[pos]
+    Series_Name = input("Series Name : ").upper()
 
     Format = input("Format : ").upper()
     Number = int(input("Number of matches : "))
@@ -1590,7 +1984,7 @@ def Series():
         for i in range(len(Team_2)):
             Impact_Points[Team_2[i]] = 0
         for i in range(Number - 1):
-            W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, _ = MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2)
+            W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, _ = MatchTestOne(Name_1, Team_1, Bowl_1, Type_1, Name_2, Team_2, Bowl_2, Type_2)
             for x in BF1.keys():
                 A = BF1[x]
                 Figure = 10000 * (A.count(5) + 1) + 1000 - (sum(A) - 5 * A.count(5))
@@ -1654,13 +2048,13 @@ def Series():
             if W != None:
                 Score[W] += 1
             print("")
-            seriesGoing(Score)
+            seriesGoing(Score, Series_Name)
             print(" ")
             BF = mergeDict(mergeDict(mergeDict(BF1, BF2), BF3), BF4)
  #           BattingScores = mergeDict_i(BattingScores, BSco, i + 1)
             BattingSheet = mergeDict(BattingSheet, BShe)
             BowlingStats = mergeDict(BowlingStats, BF)
-        W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, _ = MatchTestOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2)
+        W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, _ = MatchTestOne(Name_1, Team_1, Bowl_1, Type_1, Name_2, Team_2, Bowl_2, Type_2)
         for x in BF1.keys():
             A = BF1[x]
             Figure = 10000 * (A.count(5) + 1) + 1000 - (sum(A) - 5 * A.count(5))
@@ -1743,7 +2137,7 @@ def Series():
         else:
             print("Flog of the Series - " + Impact_Sorted[-1] + " (" + Name_2 + ")")
         print("")
-        seriesOutput(Score)
+        seriesOutput(Score, Series_Name)
         print(" ")
         BF = mergeDict(mergeDict(mergeDict(BF1, BF2), BF3), BF4)
         BattingSheet = mergeDict(BattingSheet, BShe)
@@ -1762,9 +2156,15 @@ def Series():
         RunsArray = [Batting[Batters[i]].runs for i in range(len(Batters))]
         SRArray = [Batting[Batters[i]].strikerate for i in range(len(Batters))]
         AvgArray = [Batting[Batters[i]].average for i in range(len(Batters))]
+        ConsArray = [Batting[Batters[i]].consistency for i in range(len(Batters))]
+        SixArray = [Batting[Batters[i]].sixes for i in range(len(Batters))]
+        FourArray = [Batting[Batters[i]].fours for i in range(len(Batters))]
         Runs = dict(zip(Batters, RunsArray))
         SR = dict(zip(Batters, SRArray))
         Avg = dict(zip(Batters, AvgArray))
+        Cons = dict(zip(Batters, ConsArray))
+        Six = dict(zip(Batters, SixArray))
+        Four = dict(zip(Batters, FourArray))
 
         Bowlers = list(Bowling.keys())
         RunsBowlArray = [Bowling[Bowlers[i]].Runs for i in range(len(Bowlers))]
@@ -1804,6 +2204,12 @@ def Series():
         print("Highest Strike Rates - ")
         showStats(SR)
         print(" ")
+        print("Most Sixes - ")
+        showStats(Six, cut = 10)
+        print(" ")
+        print("Most Fours - ")
+        showStats(Four, cut=10)
+        print(" ")
         print(40*"*")
         print("BOWLERS")
         print(40*"*")
@@ -1825,12 +2231,19 @@ def Series():
         print(" ")
 
     else:
+        Impact_Points = {}
+        """
+        for i in range(len(Team_1)):
+            Impact_Points[Team_1[i]] = 0
+        for i in range(len(Team_2)):
+            Impact_Points[Team_2[i]] = 0
+        """
         for i in range(Number - 1):
-            W, BSco_1, BSco_2, BShe, BF, _ = MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format)
+            W, BSco_1, BSco_2, Balls_1, Balls_2, Bowler_1, Bowler_2, BShe, BF, _ = MatchLimitedOne(Name_1, Team_1, Bowl_1, Type_1, Name_2, Team_2, Bowl_2, Type_2, Format)
             if W != None:
                 Score[W] += 1
             print("")
-            seriesGoing(Score)
+            seriesGoing(Score, Series_Name)
             print(" ")
             for x in BF.keys():
                 A = BF[x]
@@ -1839,12 +2252,84 @@ def Series():
             for x in BSco_1.keys():
                 A = BSco_1[x]
                 BattingScores[x + "_" + str(i + 1) + "_" + str(1)] = A
+                try:
+                    Impact_Points[x] += A**2 / Balls_1[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    try:
+                        Impact_Points[x] = A ** 2 / Balls_1[x]
+                        if A >= 50:
+                            Impact_Points[x] += 25
+                        if A >= 100:
+                            Impact_Points[x] += 50
+                    except:
+                        x = 5
+
             for x in BSco_2.keys():
                 A = BSco_2[x]
                 BattingScores[x + "_" + str(i + 1) + "_" + str(2)] = A
+                try:
+                    Impact_Points[x] += A ** 2 / Balls_2[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    try:
+                        Impact_Points[x] = A ** 2 / Balls_2[x]
+                        if A >= 50:
+                            Impact_Points[x] += 25
+                        if A >= 100:
+                            Impact_Points[x] += 50
+                    except:
+                        x = 5
+            for x in Bowler_1.keys():
+                A = Bowler_1[x]
+                try:
+                    if Format == "T20":
+                        Impact_Points[x] += 160 * (1 +1.5* A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+                except:
+                    if Format == "T20":
+                        Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+            for x in Bowler_2.keys():
+                A = Bowler_2[x]
+                try:
+                    if Format == "T20":
+                        Impact_Points[x] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+                except:
+                    if Format == "T20":
+                        Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+
             BattingSheet = mergeDict(BattingSheet, BShe)
             BowlingStats = mergeDict(BowlingStats, BF)
-        W, BSco_1, BSco_2, BShe, BF, _ = MatchLimitedOne(Name_1, Team_1, Bowl_1, Name_2, Team_2, Bowl_2, Format)
+        W, BSco_1, BSco_2, Balls_1, Balls_2, Bowler_1, Bowler_2, BShe, BF, _ = MatchLimitedOne(Name_1, Team_1, Bowl_1, Type_1, Name_2, Team_2, Bowl_2, Type_2, Format)
         for x in BF.keys():
             A = BF[x]
             Figure = 10000 * (A.count(5) + 1) + 1000 - (sum(A) - 5 * A.count(5))
@@ -1852,13 +2337,95 @@ def Series():
         for x in BSco_1.keys():
             A = BSco_1[x]
             BattingScores[x + "_" + str(Number) + "_" + str(1)] = A
+            try:
+                Impact_Points[x] += A ** 2 / Balls_1[x]
+                if A >= 50:
+                    Impact_Points[x] += 25
+                if A >= 100:
+                    Impact_Points[x] += 50
+            except:
+                try:
+                    Impact_Points[x] = A ** 2 / Balls_1[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    x = 5
         for x in BSco_2.keys():
             A = BSco_2[x]
             BattingScores[x + "_" + str(Number) + "_" + str(2)] = A
+            try:
+                Impact_Points[x] += A ** 2 / Balls_2[x]
+                if A >= 50:
+                    Impact_Points[x] += 25
+                if A >= 100:
+                    Impact_Points[x] += 50
+            except:
+                try:
+                    Impact_Points[x] = A ** 2 / Balls_2[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    x = 5
+        for x in Bowler_1.keys():
+            A = Bowler_1[x]
+            try:
+                if Format == "T20":
+                    Impact_Points[x] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if Format == "ODI":
+                    Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if A.count(5) >= 3:
+                    Impact_Points[x] += 25
+                if A.count(5) >= 5:
+                    Impact_Points[x] += 50
+            except:
+                if Format == "T20":
+                    Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if Format == "ODI":
+                    Impact_Points[x] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if A.count(5) >= 3:
+                    Impact_Points[x] += 25
+                if A.count(5) >= 5:
+                    Impact_Points[x] += 50
+        for x in Bowler_2.keys():
+            A = Bowler_2[x]
+            try:
+                if Format == "T20":
+                    Impact_Points[x] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if Format == "ODI":
+                    Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if A.count(5) >= 3:
+                    Impact_Points[x] += 25
+                if A.count(5) >= 5:
+                    Impact_Points[x] += 50
+            except:
+                if Format == "T20":
+                    Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if Format == "ODI":
+                    Impact_Points[x] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                if A.count(5) >= 3:
+                    Impact_Points[x] += 25
+                if A.count(5) >= 5:
+                    Impact_Points[x] += 50
         if W != None:
             Score[W] += 1
+        Impact_Sorted_Dict = dict(sorted(Impact_Points.items(), key=lambda x: x[1], reverse=True))
+        Impact_Sorted = list(Impact_Sorted_Dict.keys())
         print("")
-        seriesOutput(Score)
+        if Impact_Sorted[0] in Team_1:
+            print("Player of the Series - " + Impact_Sorted[0] + " (" + Name_1 + ")")
+        else:
+            print("Player of the Series - " + Impact_Sorted[0] + " (" + Name_2 + ")")
+        print("")
+        if Impact_Sorted[-1] in Team_1:
+            print("Flog of the Series - " + Impact_Sorted[-1] + " (" + Name_1 + ")")
+        else:
+            print("Flog of the Series - " + Impact_Sorted[-1] + " (" + Name_2 + ")")
+        print("")
+        seriesOutput(Score, Series_Name)
         print(" ")
  #       BattingScores = mergeDict_i(BattingScores, BSco, Number)
         BattingSheet = mergeDict(BattingSheet, BShe)
@@ -1877,19 +2444,25 @@ def Series():
         RunsArray = [Batting[Batters[i]].runs for i in range(len(Batters))]
         SRArray = [Batting[Batters[i]].strikerate for i in range(len(Batters))]
         AvgArray = [Batting[Batters[i]].average for i in range(len(Batters))]
+        SixArray = [Batting[Batters[i]].sixes for i in range(len(Batters))]
+        FourArray = [Batting[Batters[i]].fours for i in range(len(Batters))]
+
         Runs = dict(zip(Batters, RunsArray))
         SR = dict(zip(Batters, SRArray))
         Avg = dict(zip(Batters, AvgArray))
+        Four = dict(zip(Batters, FourArray))
+        Six = dict(zip(Batters, SixArray))
 
         Bowlers = list(Bowling.keys())
         RunsBowlArray = [Bowling[Bowlers[i]].Runs for i in range(len(Bowlers))]
         EconArray = [Bowling[Bowlers[i]].Economy for i in range(len(Bowlers))]
         WicketsArray = [Bowling[Bowlers[i]].Wickets for i in range(len(Bowlers))]
 #        AvgBowlArray = [Bowling[Bowlers[i]].Average for i in range(len(Bowlers))]
+
         AvgBowlArray = []
         BowlAvg = []
         for i in range(len(Bowlers)):
-            if Bowling[Bowlers[i]].Average != None and Bowling[Bowlers[i]].Wickets >= 0.75 * Number:
+            if Bowling[Bowlers[i]].Average != None and Bowling[Bowlers[i]].Wickets >= 0.25 * Number:
                 BowlAvg.append(Bowlers[i])
                 AvgBowlArray.append(Bowling[Bowlers[i]].Average)
         RunsBowl = dict(zip(Bowlers, RunsBowlArray))
@@ -1900,6 +2473,9 @@ def Series():
         if stats == "N":
             return
         print("")
+        print("Highest Impact Points - ")
+        showStats(Impact_Sorted_Dict)
+        print(" ")
         print(40 * "*")
         print("BATTERS")
         print(40 * "*")
@@ -1915,6 +2491,12 @@ def Series():
         print(" ")
         print("Highest Strike Rates - ")
         showStats(SR)
+        print(" ")
+        print("Most Sixes - ")
+        showStats(Six, cut = 10)
+        print(" ")
+        print("Most Fours - ")
+        showStats(Four, cut = 10)
         print(" ")
         print(40 * "*")
         print("BOWLERS")
@@ -1939,7 +2521,8 @@ def Series():
 #Series()
 
 def Tournament():
-    N_Teams = input("Teams playing the Tournament : ").upper().split(",")
+    N_Teams = input("Teams playing the Tournament : ").upper().replace(" ", "").split(",")
+    Tour_Name = input("Tournament Name : ").upper()
     IndexArray = [t.index(N_Teams[i]) for i in range(len(N_Teams))]
     MatchOrder = Combinations(IndexArray)
     Format = input("Format : ").upper()
@@ -1965,13 +2548,14 @@ def Tournament():
     print(PointsTable.loc[:, "Teams":"NRR"])
     print("")
     if Format.upper() != "TEST":
+        Impact_Points = {}
         for i in range(len(MatchOrder)):
             A = MatchOrder[i]
             print("Next Match" + " - " + "Match " + str(i + 1) + " of " + str(len(MatchOrder)) + " - "+ t[A[0]] + " vs " + t[A[1]])
             print("")
             K = input("Continue ? ")
             print(" ")
-            W, BSco_1, BSco_2, BShe, BF, NRR_Dict = MatchLimitedOne(t[A[0]], Teams[A[0]].split(","), TeamBowl[A[0]], t[A[1]], Teams[A[1]].split(","), TeamBowl[A[1]], Format)
+            W, BSco_1, BSco_2, Balls_1, Balls_2, Bowler_1, Bowler_2, BShe, BF, NRR_Dict = MatchLimitedOne(t[A[0]], Teams[A[0]].split(","), TeamBowl[A[0]], TeamType[A[0]], t[A[1]], Teams[A[1]].split(","), TeamBowl[A[1]], TeamType[A[1]], Format)
             i1 = np.where(PointsTable["Teams"] == t[A[0]])[0][0]
             i2 = np.where(PointsTable["Teams"] == t[A[1]])[0][0]
             PointsTable.loc[i1, "Runs Scored"] += NRR_Dict[t[A[0]]][0]
@@ -2023,6 +2607,80 @@ def Tournament():
                     OppTeam = t[A[0]]
                 K = BSco[x]
                 BattingScores[x + "_" + HomeTeam + "_" + OppTeam] = K
+            for x in BSco_1.keys():
+                A = BSco_1[x]
+                try:
+                    Impact_Points[x] += A ** 2 / Balls_1[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    try:
+                        Impact_Points[x] = A ** 2 / Balls_1[x]
+                        if A >= 50:
+                            Impact_Points[x] += 25
+                        if A >= 100:
+                            Impact_Points[x] += 50
+                    except:
+                        x = 5
+            for x in BSco_2.keys():
+                A = BSco_2[x]
+                try:
+                    Impact_Points[x] += A ** 2 / Balls_2[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    try:
+                        Impact_Points[x] = A ** 2 / Balls_2[x]
+                        if A >= 50:
+                            Impact_Points[x] += 25
+                        if A >= 100:
+                            Impact_Points[x] += 50
+                    except:
+                        x = 5
+            for x in Bowler_1.keys():
+                A = Bowler_1[x]
+                try:
+                    if Format == "T20":
+                        Impact_Points[x] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+                except:
+                    if Format == "T20":
+                        Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+            for x in Bowler_2.keys():
+                A = Bowler_2[x]
+                try:
+                    if Format == "T20":
+                        Impact_Points[x] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+                except:
+                    if Format == "T20":
+                        Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
             BattingSheet = mergeDict(BattingSheet, BShe)
             BowlingStats = mergeDict(BowlingStats, BF)
             PointsTable = PointsTable.sort_values(by=['Points', 'NRR'], ascending=[False, False]).reset_index().iloc[:, 1:]
@@ -2037,7 +2695,7 @@ def Tournament():
             print(40*"-")
             K = input("Continue ? ")
             print(" ")
-            W, BSco_1, BSco_2, BShe, BF, _ = MatchLimitedOne(t[FinalIndexArray[0]], Teams[FinalIndexArray[0]].split(","), TeamBowl[FinalIndexArray[0]], t[FinalIndexArray[1]], Teams[FinalIndexArray[1]].split(","), TeamBowl[FinalIndexArray[1]], Format)
+            W, BSco_1, BSco_2, Balls_1, Balls_2, Bowler_1, Bowler_2, BShe, BF, _ = MatchLimitedOne(t[FinalIndexArray[0]], Teams[FinalIndexArray[0]].split(","), TeamBowl[FinalIndexArray[0]], TeamType[FinalIndexArray[0]], t[FinalIndexArray[1]], Teams[FinalIndexArray[1]].split(","), TeamBowl[FinalIndexArray[1]], TeamType[FinalIndexArray[1]], Format)
             BSco = mergeDict(BSco_1, BSco_2)
             for x in BF.keys():
                 K = BF[x]
@@ -2062,12 +2720,86 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco[x]
                 BattingScores[x + "_Finals_" + HomeTeam + "_" + OppTeam] = K
+            for x in BSco_1.keys():
+                A = BSco_1[x]
+                try:
+                    Impact_Points[x] += A ** 2 / Balls_1[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    try:
+                        Impact_Points[x] = A ** 2 / Balls_1[x]
+                        if A >= 50:
+                            Impact_Points[x] += 25
+                        if A >= 100:
+                            Impact_Points[x] += 50
+                    except:
+                        x = 5
+            for x in BSco_2.keys():
+                A = BSco_2[x]
+                try:
+                    Impact_Points[x] += A ** 2 / Balls_2[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    try:
+                        Impact_Points[x] = A ** 2 / Balls_2[x]
+                        if A >= 50:
+                            Impact_Points[x] += 25
+                        if A >= 100:
+                            Impact_Points[x] += 50
+                    except:
+                        x = 5
+            for x in Bowler_1.keys():
+                A = Bowler_1[x]
+                try:
+                    if Format == "T20":
+                        Impact_Points[x] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+                except:
+                    if Format == "T20":
+                        Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+            for x in Bowler_2.keys():
+                A = Bowler_2[x]
+                try:
+                    if Format == "T20":
+                        Impact_Points[x] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+                except:
+                    if Format == "T20":
+                        Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
             BattingSheet = mergeDict(BattingSheet, BShe)
             BowlingStats = mergeDict(BowlingStats, BF)
             if W != None:
-                print(W + " wins the Tournament!!!")
+                print(W + " wins the " + Tour_Name + "!!!")
             else:
-                print(FinalNames[0] + " and " + FinalNames[1] + " won the Tournament")
+                print(FinalNames[0] + " and " + FinalNames[1] + " won the " + Tour_Name)
             print("")
         else:
             FinalNames = list(PointsTable.loc[[0, 1, 2, 3], "Teams"])
@@ -2077,7 +2809,7 @@ def Tournament():
             print(40*"-")
             K = input("Continue ? ")
             print(" ")
-            W, BSco_1, BSco_2, BShe, BF, _ = MatchLimitedOne(t[FinalIndexArray[0]], Teams[FinalIndexArray[0]].split(","), TeamBowl[FinalIndexArray[0]], t[FinalIndexArray[3]], Teams[FinalIndexArray[3]].split(","), TeamBowl[FinalIndexArray[3]], Format)
+            W, BSco_1, BSco_2, Balls_1, Balls_2, Bowler_1, Bowler_2, BShe, BF, _ = MatchLimitedOne(t[FinalIndexArray[0]], Teams[FinalIndexArray[0]].split(","), TeamBowl[FinalIndexArray[0]], TeamType[FinalIndexArray[0]], t[FinalIndexArray[3]], Teams[FinalIndexArray[3]].split(","), TeamBowl[FinalIndexArray[3]], TeamType[FinalIndexArray[3]], Format)
             BSco = mergeDict(BSco_1, BSco_2)
             for x in BF.keys():
                 K = BF[x]
@@ -2102,6 +2834,80 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco[x]
                 BattingScores[x + "_Semi Final 1_" + HomeTeam + "_" + OppTeam] = K
+            for x in BSco_1.keys():
+                A = BSco_1[x]
+                try:
+                    Impact_Points[x] += A ** 2 / Balls_1[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    try:
+                        Impact_Points[x] = A ** 2 / Balls_1[x]
+                        if A >= 50:
+                            Impact_Points[x] += 25
+                        if A >= 100:
+                            Impact_Points[x] += 50
+                    except:
+                        x = 5
+            for x in BSco_2.keys():
+                A = BSco_2[x]
+                try:
+                    Impact_Points[x] += A ** 2 / Balls_2[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    try:
+                        Impact_Points[x] = A ** 2 / Balls_1[x]
+                        if A >= 50:
+                            Impact_Points[x] += 25
+                        if A >= 100:
+                            Impact_Points[x] += 50
+                    except:
+                        x = 5
+            for x in Bowler_1.keys():
+                A = Bowler_1[x]
+                try:
+                    if Format == "T20":
+                        Impact_Points[x] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+                except:
+                    if Format == "T20":
+                        Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+            for x in Bowler_2.keys():
+                A = Bowler_2[x]
+                try:
+                    if Format == "T20":
+                        Impact_Points[x] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+                except:
+                    if Format == "T20":
+                        Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] = 80 * (1 +1.5* A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
             BattingSheet = mergeDict(BattingSheet, BShe)
             BowlingStats = mergeDict(BowlingStats, BF)
             W1 = None
@@ -2117,7 +2923,7 @@ def Tournament():
             print(40 * "-")
             K = input("Continue ? ")
             print(" ")
-            W, BSco_1, BSco_2, BShe, BF, _ = MatchLimitedOne(t[FinalIndexArray[1]], Teams[FinalIndexArray[1]].split(","), TeamBowl[FinalIndexArray[1]], t[FinalIndexArray[2]], Teams[FinalIndexArray[2]].split(","), TeamBowl[FinalIndexArray[2]], Format)
+            W, BSco_1, BSco_2, Balls_1, Balls_2, Bowler_1, Bowler_2, BShe, BF, _ = MatchLimitedOne(t[FinalIndexArray[1]], Teams[FinalIndexArray[1]].split(","), TeamBowl[FinalIndexArray[1]], TeamType[FinalIndexArray[1]], t[FinalIndexArray[2]], Teams[FinalIndexArray[2]].split(","), TeamBowl[FinalIndexArray[2]], TeamType[FinalIndexArray[2]], Format)
             BSco = mergeDict(BSco_1, BSco_2)
             for x in BF.keys():
                 K = BF[x]
@@ -2142,6 +2948,80 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[1]]
                 K = BSco[x]
                 BattingScores[x + "_Semi Final 2_" + HomeTeam + "_" + OppTeam] = K
+            for x in BSco_1.keys():
+                A = BSco_1[x]
+                try:
+                    Impact_Points[x] += A ** 2 / Balls_1[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    try:
+                        Impact_Points[x] = A ** 2 / Balls_1[x]
+                        if A >= 50:
+                            Impact_Points[x] += 25
+                        if A >= 100:
+                            Impact_Points[x] += 50
+                    except:
+                        x = 5
+            for x in BSco_2.keys():
+                A = BSco_2[x]
+                try:
+                    Impact_Points[x] += A ** 2 / Balls_2[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    try:
+                        Impact_Points[x] = A ** 2 / Balls_2[x]
+                        if A >= 50:
+                            Impact_Points[x] += 25
+                        if A >= 100:
+                            Impact_Points[x] += 50
+                    except:
+                        x = 5
+            for x in Bowler_1.keys():
+                A = Bowler_1[x]
+                try:
+                    if Format == "T20":
+                        Impact_Points[x] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+                except:
+                    if Format == "T20":
+                        Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+            for x in Bowler_2.keys():
+                A = Bowler_2[x]
+                try:
+                    if Format == "T20":
+                        Impact_Points[x] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+                except:
+                    if Format == "T20":
+                        Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
             BattingSheet = mergeDict(BattingSheet, BShe)
             BowlingStats = mergeDict(BowlingStats, BF)
             W2 = None
@@ -2159,7 +3039,7 @@ def Tournament():
             print(40 * "-")
             K = input("Continue ? ")
             print(" ")
-            W, BSco_1, BSco_2, BShe, BF, _ = MatchLimitedOne(t[FinalIndexArray[0]], Teams[FinalIndexArray[0]].split(","), TeamBowl[FinalIndexArray[0]], t[FinalIndexArray[1]], Teams[FinalIndexArray[1]].split(","), TeamBowl[FinalIndexArray[1]], Format)
+            W, BSco_1, BSco_2, Balls_1, Balls_2, Bowler_1, Bowler_2, BShe, BF, _ = MatchLimitedOne(t[FinalIndexArray[0]], Teams[FinalIndexArray[0]].split(","), TeamBowl[FinalIndexArray[0]], TeamType[FinalIndexArray[0]], t[FinalIndexArray[1]], Teams[FinalIndexArray[1]].split(","), TeamBowl[FinalIndexArray[1]], TeamType[FinalIndexArray[1]], Format)
             BSco = mergeDict(BSco_1, BSco_2)
             for x in BF.keys():
                 K = BF[x]
@@ -2184,12 +3064,86 @@ def Tournament():
                     OppTeam = t[FinalIndexArray[0]]
                 K = BSco[x]
                 BattingScores[x + "_Finals_" + HomeTeam + "_" + OppTeam] = K
+            for x in BSco_1.keys():
+                A = BSco_1[x]
+                try:
+                    Impact_Points[x] += A ** 2 / Balls_1[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    try:
+                        Impact_Points[x] = A ** 2 / Balls_1[x]
+                        if A >= 50:
+                            Impact_Points[x] += 25
+                        if A >= 100:
+                            Impact_Points[x] += 50
+                    except:
+                        x = 5
+            for x in BSco_2.keys():
+                A = BSco_2[x]
+                try:
+                    Impact_Points[x] += A ** 2 / Balls_2[x]
+                    if A >= 50:
+                        Impact_Points[x] += 25
+                    if A >= 100:
+                        Impact_Points[x] += 50
+                except:
+                    try:
+                        Impact_Points[x] = A ** 2 / Balls_2[x]
+                        if A >= 50:
+                            Impact_Points[x] += 25
+                        if A >= 100:
+                            Impact_Points[x] += 50
+                    except:
+                        x = 5
+            for x in Bowler_1.keys():
+                A = Bowler_1[x]
+                try:
+                    if Format == "T20":
+                        Impact_Points[x] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+                except:
+                    if Format == "T20":
+                        Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+            for x in Bowler_2.keys():
+                A = Bowler_2[x]
+                try:
+                    if Format == "T20":
+                        Impact_Points[x] += 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] += 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
+                except:
+                    if Format == "T20":
+                        Impact_Points[x] = 160 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if Format == "ODI":
+                        Impact_Points[x] = 80 * (1 + 1.5*A.count(5)) * (len(A) / 6) / max(1, total(A))
+                    if A.count(5) >= 3:
+                        Impact_Points[x] += 25
+                    if A.count(5) >= 5:
+                        Impact_Points[x] += 50
             BattingSheet = mergeDict(BattingSheet, BShe)
             BowlingStats = mergeDict(BowlingStats, BF)
             if W != None:
-                print(W + " wins the Tournament!!!")
+                print(W + " wins the " + Tour_Name + "!!!")
             else:
-                print(FinalNames[0] + " and " + FinalNames[1] + " won the Tournament")
+                print(FinalNames[0] + " and " + FinalNames[1] + " won the " + Tour_Name)
             print("")
         Batting = {}
         Bowling = {}
@@ -2205,9 +3159,16 @@ def Tournament():
         RunsArray = [Batting[Batters[i]].runs for i in range(len(Batters))]
         SRArray = [Batting[Batters[i]].strikerate for i in range(len(Batters))]
         AvgArray = [Batting[Batters[i]].average for i in range(len(Batters))]
+        ConsArray = [Batting[Batters[i]].consistency for i in range(len(Batters))]
+        SixArray = [Batting[Batters[i]].sixes for i in range(len(Batters))]
+        FourArray = [Batting[Batters[i]].fours for i in range(len(Batters))]
+
         Runs = dict(zip(Batters, RunsArray))
         SR = dict(zip(Batters, SRArray))
         Avg = dict(zip(Batters, AvgArray))
+        Cons = dict(zip(Batters, ConsArray))
+        Six = dict(zip(Batters, SixArray))
+        Four = dict(zip(Batters, FourArray))
 
         Bowlers = list(Bowling.keys())
         RunsBowlArray = [Bowling[Bowlers[i]].Runs for i in range(len(Bowlers))]
@@ -2217,17 +3178,37 @@ def Tournament():
         AvgBowlArray = []
         BowlAvg = []
         for i in range(len(Bowlers)):
-            if Bowling[Bowlers[i]].Average != None:
+            if Bowling[Bowlers[i]].Average != None and Bowling[Bowlers[i]].Wickets  > len(N_Teams):
                 BowlAvg.append(Bowlers[i])
                 AvgBowlArray.append(Bowling[Bowlers[i]].Average)
         RunsBowl = dict(zip(Bowlers, RunsBowlArray))
         Econ = dict(zip(Bowlers, EconArray))
         Wickets = dict(zip(Bowlers, WicketsArray))
         AvgBowl = dict(zip(BowlAvg, AvgBowlArray))
+        print("")
+        Impact_Sorted_Dict = dict(sorted(Impact_Points.items(), key=lambda x: x[1], reverse=True))
+        Impact_Sorted = list(Impact_Sorted_Dict.keys())
+        print("")
+        Team_0 = None
+        for i in range(0, len(IndexArray)):
+            if Impact_Sorted[0] in Teams[IndexArray[i]].split(","):
+                Team_0 = t[IndexArray[i]]
+        print("Player of the Tournament - " + Impact_Sorted[0] + " (" + Team_0 + ")")
+        print("")
+
+        Team_1 = None
+        for i in range(0, len(IndexArray)):
+            if Impact_Sorted[-1] in Teams[IndexArray[i]].split(","):
+                Team_1 = t[IndexArray[i]]
+        print("Flog of the Tournament - " + Impact_Sorted[-1] + " (" + Team_1 + ")")
+        print("")
         stats = input("Show Stats ? : ").upper()
         if stats == "N":
             return
         print("")
+        print("Highest Impact Points - ")
+        showStats(Impact_Sorted_Dict)
+        print(" ")
         print(40 * "*")
         print("BATTERS")
         print(40 * "*")
@@ -2243,6 +3224,12 @@ def Tournament():
         print(" ")
         print("Highest Strike Rates - ")
         showStats(SR)
+        print(" ")
+        print("Most Sixes - ")
+        showStats(Six, cut = 10)
+        print(" ")
+        print("Most Fours - ")
+        showStats(Four, cut=10)
         print(" ")
         print(40 * "*")
         print("BOWLERS")
@@ -2281,7 +3268,7 @@ def Tournament():
                     x = Impact_Points[Teams[A[1]].split(",")[i]]
                 except:
                     Impact_Points[Teams[A[1]].split(",")[i]] = 0
-            W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, NRR_Dict = MatchTestOne(t[A[0]], Teams[A[0]].split(","), TeamBowl[A[0]], t[A[1]], Teams[A[1]].split(","), TeamBowl[A[1]])
+            W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, NRR_Dict = MatchTestOne(t[A[0]], Teams[A[0]].split(","), TeamBowl[A[0]], TeamType[A[0]], t[A[1]], Teams[A[1]].split(","), TeamBowl[A[1]], TeamType[A[1]])
             i1 = np.where(PointsTable["Teams"] == t[A[0]])[0][0]
             i2 = np.where(PointsTable["Teams"] == t[A[1]])[0][0]
             PointsTable.loc[i1, "Runs Scored"] += NRR_Dict[t[A[0]]][0]
@@ -2450,7 +3437,7 @@ def Tournament():
             print(40*"-")
             K = input("Continue ? ")
             print(" ")
-            W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, _ = MatchTestOne(t[FinalIndexArray[0]], Teams[FinalIndexArray[0]].split(","), TeamBowl[FinalIndexArray[0]], t[FinalIndexArray[1]], Teams[FinalIndexArray[1]].split(","), TeamBowl[FinalIndexArray[1]])
+            W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, _ = MatchTestOne(t[FinalIndexArray[0]], Teams[FinalIndexArray[0]].split(","), TeamBowl[FinalIndexArray[0]], TeamType[FinalIndexArray[0]], t[FinalIndexArray[1]], Teams[FinalIndexArray[1]].split(","), TeamBowl[FinalIndexArray[1]], TeamType[FinalIndexArray[1]])
 #            BSco = mergeDict(mergeDict(mergeDict(BSco1, BSco2), BSco3), BSco4)
             BF = mergeDict(mergeDict(mergeDict(BF1, BF2), BF3), BF4)
             for x in BF1.keys():
@@ -2581,9 +3568,9 @@ def Tournament():
             BowlingStats = mergeDict(BowlingStats, BF)
 
             if W != None:
-                print(W + " wins the Tournament!!!")
+                print(W + " wins the " + Tour_Name + "!!!")
             else:
-                print(FinalNames[0] + " and " + FinalNames[1] + " won the Tournament")
+                print(FinalNames[0] + " and " + FinalNames[1] + " won the " + Tour_Name)
             print("")
         else:
             FinalNames = list(PointsTable.loc[[0, 1, 2, 3], "Teams"])
@@ -2593,7 +3580,7 @@ def Tournament():
             print(40*"-")
             K = input("Continue ? ")
             print(" ")
-            W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, _ = MatchTestOne(t[FinalIndexArray[0]], Teams[FinalIndexArray[0]].split(","), TeamBowl[FinalIndexArray[0]], t[FinalIndexArray[3]], Teams[FinalIndexArray[3]].split(","), TeamBowl[FinalIndexArray[3]])
+            W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, _ = MatchTestOne(t[FinalIndexArray[0]], Teams[FinalIndexArray[0]].split(","), TeamBowl[FinalIndexArray[0]], TeamType[FinalIndexArray[0]], t[FinalIndexArray[3]], Teams[FinalIndexArray[3]].split(","), TeamBowl[FinalIndexArray[3]], TeamType[FinalIndexArray[3]])
 #            BSco = mergeDict(mergeDict(mergeDict(BSco1, BSco2), BSco3), BSco4)
             BF = mergeDict(mergeDict(mergeDict(BF1, BF2), BF3), BF4)
             for x in BF1.keys():
@@ -2735,7 +3722,7 @@ def Tournament():
             print(40 * "-")
             K = input("Continue ? ")
             print(" ")
-            W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, _ = MatchTestOne(t[FinalIndexArray[1]], Teams[FinalIndexArray[1]].split(","), TeamBowl[FinalIndexArray[1]], t[FinalIndexArray[2]], Teams[FinalIndexArray[2]].split(","), TeamBowl[FinalIndexArray[2]])
+            W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, _ = MatchTestOne(t[FinalIndexArray[1]], Teams[FinalIndexArray[1]].split(","), TeamBowl[FinalIndexArray[1]], TeamType[FinalIndexArray[1]], t[FinalIndexArray[2]], Teams[FinalIndexArray[2]].split(","), TeamBowl[FinalIndexArray[2]], TeamType[FinalIndexArray[2]])
 #            BSco = mergeDict(mergeDict(mergeDict(BSco1, BSco2), BSco3), BSco4)
             BF = mergeDict(mergeDict(mergeDict(BF1, BF2), BF3), BF4)
             for x in BF1.keys():
@@ -2879,7 +3866,7 @@ def Tournament():
             print(40 * "-")
             K = input("Continue ? ")
             print(" ")
-            W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, _ = MatchTestOne(t[FinalIndexArray[0]], Teams[FinalIndexArray[0]].split(","), TeamBowl[FinalIndexArray[0]], t[FinalIndexArray[1]], Teams[FinalIndexArray[1]].split(","), TeamBowl[FinalIndexArray[1]])
+            W, BSco1, BSco2, BSco3, BSco4, BShe, BF1, BF2, BF3, BF4, _ = MatchTestOne(t[FinalIndexArray[0]], Teams[FinalIndexArray[0]].split(","), TeamBowl[FinalIndexArray[0]], TeamType[FinalIndexArray[0]], t[FinalIndexArray[1]], Teams[FinalIndexArray[1]].split(","), TeamBowl[FinalIndexArray[1]], TeamType[FinalIndexArray[1]])
 #            BSco = mergeDict(mergeDict(mergeDict(BSco1, BSco2), BSco3), BSco4)
             BF = mergeDict(mergeDict(mergeDict(BF1, BF2), BF3), BF4)
             for x in BF1.keys():
@@ -3009,9 +3996,9 @@ def Tournament():
             BattingSheet = mergeDict(BattingSheet, BShe)
             BowlingStats = mergeDict(BowlingStats, BF)
             if W != None:
-                print(W + " wins the Tournament!!!")
+                print(W + " wins the " + Tour_Name +"!!!")
             else:
-                print(FinalNames[0] + " and " + FinalNames[1] + " won the Tournament")
+                print(FinalNames[0] + " and " + FinalNames[1] + " won the " + Tour_Name)
             print("")
         Batting = {}
         Bowling = {}
@@ -3027,9 +4014,15 @@ def Tournament():
         RunsArray = [Batting[Batters[i]].runs for i in range(len(Batters))]
         SRArray = [Batting[Batters[i]].strikerate for i in range(len(Batters))]
         AvgArray = [Batting[Batters[i]].average for i in range(len(Batters))]
+        ConsArray = [Batting[Batters[i]].consistency for i in range(len(Batters))]
+        SixArray = [Batting[Batters[i]].sixes for i in range(len(Batters))]
+        FourArray = [Batting[Batters[i]].fours for i in range(len(Batters))]
         Runs = dict(zip(Batters, RunsArray))
         SR = dict(zip(Batters, SRArray))
         Avg = dict(zip(Batters, AvgArray))
+        Cons = dict(zip(Batters, ConsArray))
+        Six = dict(zip(Batters, SixArray))
+        Four = dict(zip(Batters, FourArray))
 
         Bowlers = list(Bowling.keys())
         RunsBowlArray = [Bowling[Bowlers[i]].Runs for i in range(len(Bowlers))]
@@ -3039,7 +4032,7 @@ def Tournament():
         AvgBowlArray = []
         BowlAvg = []
         for i in range(len(Bowlers)):
-            if Bowling[Bowlers[i]].Average != None:
+            if Bowling[Bowlers[i]].Average != None and Bowling[Bowlers[i]].Wickets  > 2*len(N_Teams) - 2:
                 BowlAvg.append(Bowlers[i])
                 AvgBowlArray.append(Bowling[Bowlers[i]].Average)
         RunsBowl = dict(zip(Bowlers, RunsBowlArray))
@@ -3086,6 +4079,12 @@ def Tournament():
         print(" ")
         print("Highest Strike Rates - ")
         showStats(SR)
+        print(" ")
+        print("Most Sixes - ")
+        showStats(Six, cut = 10)
+        print(" ")
+        print("Most Fours - ")
+        showStats(Four, cut = 10)
         print(" ")
         print(40 * "*")
         print("BOWLERS")
